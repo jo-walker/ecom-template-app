@@ -1,0 +1,12 @@
+model Product {
+    code            Int       @id @default(autoincrement()) // Unique identifier for the product
+    SKU             String    @unique // SKU should be unique for each product
+    description     Json      // Store product descriptions in multiple languages
+    vendor          Json      // Vendor details including price, lead time, and reorder level
+    selling_price   Json      // JSON structure for different pricing (retail, wholesale, etc.)
+    size            Json      // JSON structure for size information
+    stock           Int       // Number of items in stock
+    linked_pictures Json      // JSON array of picture URLs, with attributes like size, color, etc.
+    sold_item       Int       // Number of sold items
+    history         Json      // History including created and updated time, user of the product
+}

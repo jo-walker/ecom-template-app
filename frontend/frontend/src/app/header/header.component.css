@@ -1,0 +1,11 @@
+@import '../../../styles/variables.css';
+.header-container {
+    background-color: var(--darkblue);
+    color: var(--white);
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 5px;
+  }  
+  .logo {
+    filter: invert(100%) brightness(100) contrast(100%);
+}

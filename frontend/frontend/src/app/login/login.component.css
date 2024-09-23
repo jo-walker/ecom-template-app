@@ -1,0 +1,61 @@
+@import '../../../styles/variables.css';
+body {
+    background-color: var(--lightgrey);
+    font-family: var(--font);
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--darkblue);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: var(--white);
+    text-align: center;
+}
+
+h1, h2 {
+    color: var(--gold);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--white);
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--blue);
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    background-color: var(--lightblue);
+    color: var(--black);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+.error-message {
+    color: var(--gold);
+    margin-bottom: 10px;
+}
+
+a {
+    color: var(--lightblue);
+}
+
+a:hover {
+    color: var(--blue);
+}

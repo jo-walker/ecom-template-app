@@ -1,0 +1,180 @@
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service'; 
+import { ProductService } from '../../services/product.service';
+import { PaymentService } from '../../services/payment.service'; 
+import { Router } from '@angular/router';
+import { ViewEncapsulation } from '@angular/core';
+
+// Define the interface for description data
+interface DescriptionData {
+  color: string;
+  kind: string;
+  catName: string;
+  StyleName: string;
+  Description: string;
+  weight: string;
+  sex: string;
+}
+
+@Component({
+  selector: 'app-sales',
+  templateUrl: './sales.component.html',
+  styleUrls: ['./sales.component.css'],
+  encapsulation: ViewEncapsulation.None // This disables style encapsulation
+})
+
+export class SalesComponent {
+  error: string | null = null;
+  username: string = 'User' || ''; // Default to empty string if username is not available
+  Barcode: string = '';
+  Description: string = '';
+  Picture: string = '';
+  RelatedItems: any[] = []; // For related products
+  SalesTicket: string = ''; // Will store all items in the cart
+  Subtotal: number = 0;
+  Tax: number = 0;
+  Total: number = 0;
+  totalItems: number = 0;
+  cart: any[] = []; // Array to hold cart items
+
+  constructor(
+    private authService: AuthService,
+    private productService: ProductService,
+    private paymentService: PaymentService,
+    private router: Router
+  ) {
+    this.username = this.authService.getUsername(); // Assuming AuthService has a method to get the username
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']); // Redirect to login after logout
+  }
+  scan() {
+    if (this.Barcode) {
+      this.productService.getProductByBarcode(this.Barcode).subscribe(
+        (product) => {
+          if (product) {
+            console.log('Product found:', product);
+            let descriptionData: DescriptionData | null = null; // Define as possibly null
+    
+            // Parse the description field if it's a valid JSON string
+            if (product.description) {
+              try {
+                descriptionData = JSON.parse(product.description); // Parse the JSON string
+                if (descriptionData) {
+                  this.Description = descriptionData.Description; // Access the 'Description' key from parsed object
+                } else {
+                  this.Description = 'No description available'; // Fallback if JSON is empty or invalid
+                }
+              } catch (error) {
+                console.error('Error parsing description:', error);
+                this.error = 'Invalid description format!';
+              }
+            } else {
+              // If description is missing or not in JSON format
+              this.Description = 'No description available'; 
+            }
+    
+            // Handle product picture and related items
+            this.Picture = product.picture || 'default-image-url.jpg'; // Provide a default picture if missing
+            this.RelatedItems = product.relatedItems || []; // Handle if related items are undefined
+    
+            let priceData;
+    
+            // Check if selling_price exists and is valid JSON
+            if (product.selling_price) {
+              try {
+                priceData = JSON.parse(product.selling_price); // Parse the JSON price data
+              } catch (e) {
+                this.error = 'Invalid price format';
+                return;
+              }
+    
+              const selling_price = parseFloat(priceData.sellsPrice); // Extract 'sellsPrice'
+    
+              // Add the product to the cart with the correct price
+              this.cart.push({
+                name: this.Description, // Use the description from either the JSON or default
+                price: selling_price,
+                sku: product.SKU,
+              });
+    
+              this.updateSalesInfo(); // Recalculate totals and update the sales ticket
+              this.clearInputFields(); // Clear input fields for the next scan
+            } else {
+              this.error = 'Product price not available!';
+            }
+          } else {
+            this.error = 'Product not found!';
+          }
+        },
+        (error) => {
+          this.error = 'Error fetching product details';
+        }
+      );
+    }
+  }   
+  
+  // Updates the sales ticket, subtotal, tax, and total
+  updateSalesInfo() {
+    // Update the sales ticket (join all product names and prices)
+    this.SalesTicket = this.cart
+      .map(item => `${item.name} - ${item.price.toFixed(2)}`)
+      .join('\n');
+  
+    // Update subtotal
+    this.Subtotal = this.cart.reduce((sum, item) => sum + item.price, 0);
+  
+    // Update tax (Ontario 13% tax)
+    this.Tax = this.Subtotal * 0.13;
+  
+    // Update total (Subtotal + Tax)
+    this.Total = this.Subtotal + this.Tax;
+  
+    // Update the total number of items sold
+    this.totalItems = this.cart.length;
+  }  
+
+  // Simulate the payment process
+  pay() {
+    const paymentData = {
+      subtotal: this.Subtotal,
+      tax: this.Tax,
+      total: this.Total,
+      items: this.cart,
+    };
+
+    this.paymentService.processPayment(paymentData).subscribe(
+      (response) => {
+        alert('Payment completed!');
+        this.resetCart(); // Reset the cart after payment
+      },
+      (error) => {
+        this.error = 'Payment failed';
+      }
+    );
+  }
+
+  // Clears the input fields after adding to cart
+  clearInputFields() {
+    this.Barcode = '';
+    this.Description = '';
+    this.Picture = '';
+    this.RelatedItems = [];
+  }
+
+  // Resets the cart and all the totals
+  resetCart() {
+    this.cart = [];
+    this.SalesTicket = '';
+    this.Subtotal = 0;
+    this.Tax = 0;
+    this.Total = 0;
+    this.totalItems = 0;
+  }
+
+  cancel() {
+    this.resetCart();
+  }
+}

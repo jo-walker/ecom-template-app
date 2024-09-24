@@ -2,8 +2,12 @@
 .footer-container {
     background-color: var(--darkblue);
     color: var(--white);
-    padding: 10px 20px;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 0px 0px 5px 5px;
     margin-top: 20px;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
   }  

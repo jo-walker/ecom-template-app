@@ -31,10 +31,18 @@
           <button id="scanB" type="button" (click)="scan()">Scan</button>
         </div>
         <div>
-          <label for="Description">Description</label>
-          <!-- <textarea id="Description" [(ngModel)]="Description" name="Description" readonly>{{Description}}</textarea> -->
-          <p id="Description">{{Description}}</p>
+          <label for="Name">Product Name</label>
+          <p id="Name">{{ Name }}</p> <!-- Use paragraph for display -->
         </div>
+        <div>
+          <label for="Price">Price</label>
+          <p id="Price">{{ Price | currency:'CAD':true }}</p> 
+        </div>        
+        <div>
+          <label for="Description">Description</label>
+          <p id="Description">{{ Description }}</p> <!-- Display description -->
+        </div>
+        
         <div>
           <label for="Picture">Product Picture</label>
           <img [src]="Picture" alt="Product Image" *ngIf="Picture" class="product-image">

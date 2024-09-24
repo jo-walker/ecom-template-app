@@ -27,6 +27,8 @@ export class SalesComponent {
   error: string | null = null;
   username: string = 'User' || ''; // Default to empty string if username is not available
   Barcode: string = '';
+  Name: string = '';
+  Price: number = 0;  
   Description: string = '';
   Picture: string = '';
   RelatedItems: any[] = []; // For related products
@@ -53,58 +55,70 @@ export class SalesComponent {
   scan() {
     if (this.Barcode) {
       this.productService.getProductByBarcode(this.Barcode).subscribe(
-        (product) => {
-          if (product) {
+        (response) => {  // change `product` to `response` for clarity
+          if (response) {
+            const product = response.product;  // access the product inside the response
             console.log('Product found:', product);
-            let descriptionData: DescriptionData | null = null; // Define as possibly null
-    
+  
+            // Log the description before parsing
+            console.log('Raw product description:', product.description);
+            
             // Parse the description field if it's a valid JSON string
             if (product.description) {
               try {
-                descriptionData = JSON.parse(product.description); // Parse the JSON string
+                const descriptionData: DescriptionData = JSON.parse(product.description);
+                console.log('Parsed description data:', descriptionData); // Log parsed data
+                
                 if (descriptionData) {
-                  this.Description = descriptionData.Description; // Access the 'Description' key from parsed object
+                  this.Description = descriptionData.Description; // Access 'Description' from parsed JSON
+                  this.Name = descriptionData.StyleName || 'No Name'; // Example for name
                 } else {
-                  this.Description = 'No description available'; // Fallback if JSON is empty or invalid
+                  this.Description = 'No description available'; // Fallback
                 }
               } catch (error) {
                 console.error('Error parsing description:', error);
                 this.error = 'Invalid description format!';
+                this.Description = 'No description available';
               }
-            } else {
-              // If description is missing or not in JSON format
-              this.Description = 'No description available'; 
             }
-    
-            // Handle product picture and related items
-            this.Picture = product.picture || 'default-image-url.jpg'; // Provide a default picture if missing
-            this.RelatedItems = product.relatedItems || []; // Handle if related items are undefined
-    
-            let priceData;
-    
-            // Check if selling_price exists and is valid JSON
+  
+            // Log the selling price before parsing
+            console.log('Raw product selling_price:', product.selling_price);
+            
+            // Parse the selling price field and extract sellsPrice
             if (product.selling_price) {
               try {
-                priceData = JSON.parse(product.selling_price); // Parse the JSON price data
+                const priceData = JSON.parse(product.selling_price);
+                console.log('Parsed price data:', priceData);
+                
+                // Assign the parsed sellsPrice to Price
+                if (priceData.sellsPrice) {
+                  this.Price = parseFloat(priceData.sellsPrice); // Parse and assign sellsPrice
+                } else {
+                  this.Price = 0; // Fallback in case sellsPrice is missing
+                }
               } catch (e) {
+                console.error('Error parsing price:', e);
                 this.error = 'Invalid price format';
-                return;
               }
-    
-              const selling_price = parseFloat(priceData.sellsPrice); // Extract 'sellsPrice'
-    
-              // Add the product to the cart with the correct price
-              this.cart.push({
-                name: this.Description, // Use the description from either the JSON or default
-                price: selling_price,
-                sku: product.SKU,
-              });
-    
-              this.updateSalesInfo(); // Recalculate totals and update the sales ticket
-              this.clearInputFields(); // Clear input fields for the next scan
-            } else {
-              this.error = 'Product price not available!';
             }
+  
+            // Log picture and related items
+            console.log('Product picture:', product.picture);
+            console.log('Related items:', product.relatedItems);
+  
+            // Update picture and related items
+            this.Picture = product.picture || 'default-image-url.jpg';
+            this.RelatedItems = product.relatedItems || [];
+  
+            // Add the product to the cart and update the sales info
+            this.cart.push({
+              name: this.Name,
+              price: this.Price,  // Ensure it's stored as a float number
+              sku: product.SKU,
+            });
+            this.updateSalesInfo();
+            this.clearInputFields(); // Clear input fields after scan
           } else {
             this.error = 'Product not found!';
           }
@@ -114,8 +128,7 @@ export class SalesComponent {
         }
       );
     }
-  }   
-  
+  }  
   // Updates the sales ticket, subtotal, tax, and total
   updateSalesInfo() {
     // Update the sales ticket (join all product names and prices)

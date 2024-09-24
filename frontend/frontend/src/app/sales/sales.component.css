@@ -1,19 +1,18 @@
 /* @import '../../../styles/variables.css'; */
 .sales-container {
   background-color: var(--lightgrey);
-  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px auto;
-  max-width: 1200px;
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   background-color: var(--darkblue);
-  padding: 10px 20px;
+  padding: 10px 25px;
   border-radius: 10px 10px 0 0;
   border-bottom: 10px solid var(--lightblue);
   color: var(--white);
@@ -94,7 +93,7 @@
   color: var(--white);
 }
 #Barcode {
-  width: 20%;
+  width: 40%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid var(--blue);

@@ -4,6 +4,7 @@ import { ProductService } from '../../services/product.service';
 import { PaymentService } from '../../services/payment.service'; 
 import { Router } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef } from '@angular/core';
 
 // Define the interface for description data
 interface DescriptionData {
@@ -38,12 +39,19 @@ export class SalesComponent {
   Total: number = 0;
   totalItems: number = 0;
   cart: any[] = []; // Array to hold cart items
+  color: string = '';
+  kind: string = '';
+  StyleName: string = '';
+  weight: string = '';
+  sex: string = '';
+  relateditems: any[] = []; // Instead of RelatedItems
 
   constructor(
     private authService: AuthService,
     private productService: ProductService,
     private paymentService: PaymentService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef //to trigger change detection 
   ) {
     this.username = this.authService.getUsername(); // Assuming AuthService has a method to get the username
   }
@@ -55,70 +63,48 @@ export class SalesComponent {
   scan() {
     if (this.Barcode) {
       this.productService.getProductByBarcode(this.Barcode).subscribe(
-        (response) => {  // change `product` to `response` for clarity
+        (response) => { 
           if (response) {
-            const product = response.product;  // access the product inside the response
-            console.log('Product found:', product);
+            const product = response.product;
   
-            // Log the description before parsing
-            console.log('Raw product description:', product.description);
-            
-            // Parse the description field if it's a valid JSON string
+            // Handle description
             if (product.description) {
               try {
                 const descriptionData: DescriptionData = JSON.parse(product.description);
-                console.log('Parsed description data:', descriptionData); // Log parsed data
-                
-                if (descriptionData) {
-                  this.Description = descriptionData.Description; // Access 'Description' from parsed JSON
-                  this.Name = descriptionData.StyleName || 'No Name'; // Example for name
-                } else {
-                  this.Description = 'No description available'; // Fallback
-                }
+                this.Description = descriptionData.Description || 'No description available';
+                this.color = descriptionData.color;
+                this.kind = descriptionData.kind;
+                this.StyleName = descriptionData.StyleName;
+                this.weight = descriptionData.weight;
+                this.sex = descriptionData.sex;
+                this.Name = descriptionData.StyleName || 'No Name';
+                this.cdr.detectChanges(); // Trigger change detection
               } catch (error) {
-                console.error('Error parsing description:', error);
                 this.error = 'Invalid description format!';
                 this.Description = 'No description available';
               }
+            } else {
+              this.Description = 'No description available';
             }
   
-            // Log the selling price before parsing
-            console.log('Raw product selling_price:', product.selling_price);
-            
-            // Parse the selling price field and extract sellsPrice
+            // Handle selling price
             if (product.selling_price) {
               try {
                 const priceData = JSON.parse(product.selling_price);
-                console.log('Parsed price data:', priceData);
-                
-                // Assign the parsed sellsPrice to Price
-                if (priceData.sellsPrice) {
-                  this.Price = parseFloat(priceData.sellsPrice); // Parse and assign sellsPrice
-                } else {
-                  this.Price = 0; // Fallback in case sellsPrice is missing
-                }
-              } catch (e) {
-                console.error('Error parsing price:', e);
+                this.Price = parseFloat(priceData.sellsPrice) || 0;
+              } catch (error) {
                 this.error = 'Invalid price format';
+                this.Price = 0;
               }
             }
   
-            // Log picture and related items
-            console.log('Product picture:', product.picture);
-            console.log('Related items:', product.relatedItems);
-  
-            // Update picture and related items
+            // Handle related items and picture
             this.Picture = product.picture || 'default-image-url.jpg';
             this.RelatedItems = product.relatedItems || [];
+            
+            // Clear previous error message
+            this.error = null;
   
-            // Add the product to the cart and update the sales info
-            this.cart.push({
-              name: this.Name,
-              price: this.Price,  // Ensure it's stored as a float number
-              sku: product.SKU,
-            });
-            this.updateSalesInfo();
-            this.clearInputFields(); // Clear input fields after scan
           } else {
             this.error = 'Product not found!';
           }
@@ -128,7 +114,22 @@ export class SalesComponent {
         }
       );
     }
-  }  
+  }
+  
+  addToCart() {
+    if (this.Name && this.Price) {
+      this.cart.push({
+        name: this.Name,
+        price: this.Price,
+        sku: this.Barcode,
+      });
+      this.updateSalesInfo();
+      this.clearInputFields();
+    } else {
+      this.error = 'No product to add!';
+    }
+  }
+  
   // Updates the sales ticket, subtotal, tax, and total
   updateSalesInfo() {
     // Update the sales ticket (join all product names and prices)
@@ -190,4 +191,9 @@ export class SalesComponent {
   cancel() {
     this.resetCart();
   }
+  removeItem(index: number) {
+    this.cart.splice(index, 1); // Remove the item at the specified index
+    this.updateSalesInfo(); // Update the sales info after removal
+  }
+  
 }

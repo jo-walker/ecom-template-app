@@ -5,6 +5,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
   max-width: 100%;
+  font-size: 10px;
 }
 
 .header {
@@ -21,9 +22,12 @@
   display: flex;
   align-items: center; /* Vertically aligns Logout button and user info */
 }
-
-.header-right h5 {
-  margin-right: 10px; /* Adds space between the username and the Logout button */
+/* Header with larger font size */
+.header h6 {
+  font-size: 16px; /* Adjust as per your desired size */
+}
+.header-right h6 {
+  margin-right: 2em; /* Adds space between the username and the Logout button */
 }
 .sales-wrapper {
   display: flex;
@@ -33,7 +37,7 @@
 
 .left-side {
   width: 65%; /* Now the left side is 2/3 */
-  padding-right: 20px;
+  padding-right: 10px;
   border-right: 1px solid var(--blue);
 }
 
@@ -41,22 +45,41 @@
   width: 30%; /* The right side is 1/3 */
 }
 .totals-container {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Align vertically */
-  gap: 20px; /* Adds space between the two boxes */
-  margin: 20px auto; /* Center the container */
-  max-width: 60%; /* Adjust as necessary */
+  display: flex; /* Display the boxes side by side */
+  justify-content: center; /* Center the groups horizontally */
+  gap: 20px; /* Space between the two stacked groups */
+  margin: 20px auto;
+  max-width: 40%; /* Adjust as necessary */
+  font-size: 12px;
 }
 
-.total-amount-box, .total-items-box {
-  flex-basis: 45%; /* Ensures both boxes take equal space */
-  text-align: center;
+.totals-box {
+  display: flex;
+  flex-direction: column; /* Stack the boxes vertically inside each group */
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Space between the stacked boxes */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.total-amount-box, .total-items-box, .total-value-box {
+  display: flex; /* Makes the boxes flex containers */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  text-align: center; /* Centers text horizontally */
   padding: 10px;
-  border: 1px solid var(--blue);
+  width: 100%;
+  height: 50%; /* Optional: Adjust height to make it visually consistent */
+  border: 1px solid var(--lightgrey);
   background-color: var(--grey);
   border-radius: 5px;
 }
+
+.total-amount-box p, .total-items-box p, .total-value-box p {
+  margin: 0; /* Remove any default margins from the <p> elements */
+  line-height: 1.5; /* Adjust line-height if needed */
+}
+
 
 .sales-container h2, .sales-container h3 {
   color: var(--darkblue);
@@ -73,14 +96,14 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid var(--blue);
+  /* border: 1px solid var(--blue); */
   border-radius: 5px;
 }
 
 .sales-container button {
   background-color: var(--lightblue);
   color: var(--black);
-  padding: 10px 20px;
+  padding: 5px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -92,41 +115,76 @@
   background-color: var(--blue);
   color: var(--white);
 }
+.sales-container form div{
+  display: flex;
+  align-items: center;
+}
+.inline-fields {
+  display: flex; /* Display all items inline */
+  justify-content: space-between; /* Evenly distribute space between items */
+  align-items: center; /* Align items vertically */
+  gap: 0px; /* Add spacing between elements */
+}
+.product-section, .price-section {
+  display: flex;
+  flex-direction: column;
+  width: 150px; /* Adjust width to fit on the same line */
+}
+.barcode-scan-section {
+  display: flex;
+  align-items: center; /* Vertically align the input and button */
+  gap: 10px; /* Add space between the input and the button */
+}
 #Barcode {
-  width: 40%;
+  width: 70%; /* Adjust input width to fit with button */
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid var(--blue);
+  margin-right: 10px;
   border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+#scanB{
+  width: 20%;
+  float: none;
+  padding: 10px;
+}
+.product-section p, .price-section p {
+  margin: 0; /* Ensure no additional margin for <p> */
+}
+#Price {
+  text-align: right; /* Align price to the right if necessary */
 }
 /* total-amount to be fixed as a block in the sales-container */
 .total-amount {
   display: flex;
   flex-direction: column;
-    margin-bottom: 20px; /* Ensures space between the header and the amount */
+  margin-bottom: 0; /* Ensures space between the header and the amount */
 }
 .total-amount div {
   display: flex;
   align-items: center; /* Vertically align label and input */
   justify-content: space-between;
-  margin-bottom: 10px; /* Adds spacing between each label-input pair */
+  margin-bottom: 0; /* Adds spacing between each label-input pair */
 }
 
 .total-amount label {
   flex-basis: 50%; /* Label takes 50% of the width */
-  margin-right: 10px;
+  margin-right: 0px;
   text-align: right; /* Align label text to the right */
+  font-size: 10px;
+}
+.total-amount p {
+  font-size: 10px;
+  background-color: var(--lightgrey);
+  border-radius: 5px;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.total-amount input {
-  flex-basis: 45%; /* Input takes 45% of the width */
-  text-align: center;
-  padding: 5px; /* Adjust padding for a consistent look */
-}
 #Subtotal, #Tax, #Total {
   font-size: 10px;
   padding: 10px;
-  border: 1px solid var(--blue);
   background-color: var(--lightgrey);
   border-radius: 5px;
   margin-bottom: 10px;
@@ -158,27 +216,119 @@
   color: var(--gold);
   margin-bottom: 10px;
 }
-#Description {
-  font-size: 10px;
-  padding: 10px;
-  border: 1px solid var(--blue);
-  background-color: var(--lightgrey);
-  border-radius: 5px;
-  min-height: 150px;
-  max-height: 300px;
+  #Description {
+    font-size: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--lightgrey);
+    border-radius: 5px;
+    min-height: 260px; /* Adjust this as needed */
+    max-height: 300px; /* Fixed height for description */
+    overflow-y: auto; /* Scrollbar for overflowing content */
+
+}
+
+.description-container p {
+  display: block; /* Ensures each <p> takes up the full width */
+  margin-bottom: 8px; /* Adds space between each key-value pair */
+  line-height: 1.5; /* Improves readability by adding spacing between lines */
+  word-wrap: break-word; /* Ensures long text breaks properly */
 }
 
 #Sales {
   font-size: 10px;
   padding: 10px;
-  border: 1px solid var(--blue);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: var(--lightgrey);
-  min-height: 250px;
+  min-height: 300px;
   max-height: 300px;
   overflow-y: auto; /* If the sales ticket gets long, add a scroll bar */
   border-radius: 5px;
 }
+/* Sales Ticket container with fixed height and scrollbar */
+.sales-ticket-container {
+  font-size: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--lightgrey);
+  min-height: 250px;
+  max-height: 250px; /* Fixed height for sales ticket */
+  overflow-y: auto; /* Scrollbar for overflowing content */
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+/* Style the ordered list for the cart */
+.sales-ticket-container ol {
+  padding-left: 20px; /* Indent the list items */
+  list-style-type: decimal; /* Show numbers before each item */
+  margin: 0;
+  padding: 0;
+}
+
+/* Style each list item in the sales ticket */
+.sales-ticket-container li {
+  display: flex;
+  justify-content: space-between; /* Align item name and remove button */
+  align-items: center; /* Vertically align item name and remove button */
+  margin-bottom: 10px;
+}
+
+/* Ensure the cart item text and button are aligned */
+.sales-item p {
+  margin: 0;
+  flex-grow: 1; /* Allow the item name to grow */
+}
+
+/* Style the remove button */
+.sales-item button {
+  background-color: var(--lightblue);
+  color: var(--black);
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sales-item button:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
 .divider {
   border: 1px solid var(--blue); /* Set the color and thickness of the line */
   margin: 20px 0; /* Adjust the spacing around the line */
+}
+.description-wrapper, .sales-ticket-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack the label and container vertically */
+  margin-bottom: 20px; /* Add some space between sections */
+}
+
+.description-wrapper label, .sales-ticket-wrapper label {
+  margin-bottom: 5px; /* Add space between the label and the container */
+  font-size: 12px; /* Adjust label size if needed */
+}
+
+.description-container {
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--lightgrey);
+  border-radius: 5px;
+  min-height: 260px;
+  max-height: 300px;
+  overflow-y: auto; /* Enable scrolling if content overflows */
+}
+
+.sales-ticket-container {
+  font-size: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--lightgrey);
+  min-height: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column; /* Ensure items stack vertically */
+  justify-content: flex-start; /* Align items to the top */
 }

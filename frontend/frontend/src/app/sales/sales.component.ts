@@ -33,6 +33,7 @@ export class SalesComponent {
   Description: string = '';
   Picture: string = '';
   RelatedItems: any[] = []; // For related products
+  productPictures: any[] = []; // For product pictures
   SalesTicket: string = ''; // Will store all items in the cart
   Subtotal: number = 0;
   Tax: number = 0;
@@ -44,7 +45,7 @@ export class SalesComponent {
   StyleName: string = '';
   weight: string = '';
   sex: string = '';
-  relateditems: any[] = []; // Instead of RelatedItems
+  totalGridItems = 9; // Total number of grid items, including placeholders
 
   constructor(
     private authService: AuthService,
@@ -60,61 +61,66 @@ export class SalesComponent {
     this.authService.logout();
     this.router.navigate(['/login']); // Redirect to login after logout
   }
-  scan() {
-    if (this.Barcode) {
-      this.productService.getProductByBarcode(this.Barcode).subscribe(
-        (response) => { 
-          if (response) {
-            const product = response.product;
-  
-            // Handle description
-            if (product.description) {
-              try {
-                const descriptionData: DescriptionData = JSON.parse(product.description);
-                this.Description = descriptionData.Description || 'No description available';
-                this.color = descriptionData.color;
-                this.kind = descriptionData.kind;
-                this.StyleName = descriptionData.StyleName;
-                this.weight = descriptionData.weight;
-                this.sex = descriptionData.sex;
-                this.Name = descriptionData.StyleName || 'No Name';
-                this.cdr.detectChanges(); // Trigger change detection
-              } catch (error) {
-                this.error = 'Invalid description format!';
+    // Function to calculate empty grids
+    get emptyGrids() {
+      return Array(this.totalGridItems - this.RelatedItems.length).fill(0);
+    }
+    scan() {
+      if (this.Barcode) {
+        this.productService.getProductByBarcode(this.Barcode).subscribe(
+          (response) => { 
+            if (response) {
+              const product = response.product;
+    
+              // Handle linked_pictures (array of images)
+              // this.productPictures = response.linked_pictures || []; // This should be the array of image URLs
+              this.productPictures = ["https://cashmerecasa.com/wp-content/uploads/2024/08/Untitled-design-2.png"];
+
+              // Handle description
+              if (product.description) {
+                try {
+                  const descriptionData: DescriptionData = JSON.parse(product.description);
+                  this.Description = descriptionData.Description || 'No description available';
+                  this.color = descriptionData.color;
+                  this.kind = descriptionData.kind;
+                  this.StyleName = descriptionData.StyleName;
+                  this.weight = descriptionData.weight;
+                  this.sex = descriptionData.sex;
+                  this.Name = descriptionData.StyleName || 'No Name';
+                  this.RelatedItems = product.relatedItems || [];
+                  this.cdr.detectChanges(); // Trigger change detection
+                } catch (error) {
+                  this.error = 'Invalid description format!';
+                  this.Description = 'No description available';
+                }
+              } else {
                 this.Description = 'No description available';
               }
-            } else {
-              this.Description = 'No description available';
-            }
-  
-            // Handle selling price
-            if (product.selling_price) {
-              try {
-                const priceData = JSON.parse(product.selling_price);
-                this.Price = parseFloat(priceData.sellsPrice) || 0;
-              } catch (error) {
-                this.error = 'Invalid price format';
-                this.Price = 0;
+    
+              // Handle selling price
+              if (product.selling_price) {
+                try {
+                  const priceData = JSON.parse(product.selling_price);
+                  this.Price = parseFloat(priceData.sellsPrice) || 0;
+                } catch (error) {
+                  this.error = 'Invalid price format';
+                  this.Price = 0;
+                }
               }
+              
+              this.RelatedItems = product.relatedItems || [];
+              this.error = null;
+            } else {
+              this.error = 'Product not found!';
             }
-  
-            // Handle related items and picture
-            this.Picture = product.picture || 'default-image-url.jpg';
-            this.RelatedItems = product.relatedItems || [];
-            
-            // Clear previous error message
-            this.error = null;
-  
-          } else {
-            this.error = 'Product not found!';
+          },
+          (error) => {
+            this.error = 'Error fetching product details';
           }
-        },
-        (error) => {
-          this.error = 'Error fetching product details';
-        }
-      );
+        );
+      }
     }
-  }
+    
   
   addToCart() {
     if (this.Name && this.Price) {
@@ -195,5 +201,11 @@ export class SalesComponent {
     this.cart.splice(index, 1); // Remove the item at the specified index
     this.updateSalesInfo(); // Update the sales info after removal
   }
-  
+  clearScannedItem() {
+    this.Barcode = '';
+    this.Name = '';
+    this.Price = 0; // Assuming it's numeric
+    this.Description = '';
+  }
+   
 }

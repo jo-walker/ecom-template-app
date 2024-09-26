@@ -1,4 +1,4 @@
-/* @import '../../../styles/variables.css'; */
+/* General container styling */
 .sales-container {
   background-color: var(--lightgrey);
   border-radius: 10px;
@@ -7,7 +7,7 @@
   max-width: 100%;
   font-size: 10px;
 }
-
+/* Header styling */
 .header {
   display: flex;
   justify-content: space-around;
@@ -18,73 +18,78 @@
   border-bottom: 10px solid var(--lightblue);
   color: var(--white);
 }
+
 .header-right {
   display: flex;
-  align-items: center; /* Vertically aligns Logout button and user info */
+  align-items: center;
 }
-/* Header with larger font size */
+
 .header h6 {
-  font-size: 16px; /* Adjust as per your desired size */
+  font-size: 16px;
 }
+
 .header-right h6 {
-  margin-right: 2em; /* Adds space between the username and the Logout button */
+  margin-right: 2em;
 }
+
+/* Sales wrapper */
 .sales-wrapper {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
+/* Left and right side content */
 .left-side {
-  width: 65%; /* Now the left side is 2/3 */
+  width: 65%;
   padding-right: 10px;
   border-right: 1px solid var(--blue);
+  padding-left: 24px;
 }
 
 .right-side {
-  width: 30%; /* The right side is 1/3 */
+  width: 30%;
+  padding-right: 20px;
 }
+
+/* Totals container */
 .totals-container {
-  display: flex; /* Display the boxes side by side */
-  justify-content: center; /* Center the groups horizontally */
-  gap: 20px; /* Space between the two stacked groups */
+  display: flex;
+  justify-content: center;
+  gap: 20px;
   margin: 20px auto;
-  max-width: 40%; /* Adjust as necessary */
-  font-size: 12px;
+  max-width: 40%;
+  font-size: 10px;
 }
 
 .totals-box {
   display: flex;
-  flex-direction: column; /* Stack the boxes vertically inside each group */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px; /* Space between the stacked boxes */
+  gap: 0px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.total-amount-box, .total-items-box, .total-value-box {
-  display: flex; /* Makes the boxes flex containers */
-  justify-content: center; /* Centers content horizontally */
-  align-items: center; /* Centers content vertically */
-  text-align: center; /* Centers text horizontally */
-  padding: 10px;
-  width: 100%;
-  height: 50%; /* Optional: Adjust height to make it visually consistent */
-  border: 1px solid var(--lightgrey);
-  background-color: var(--grey);
+  padding: 2px;
   border-radius: 5px;
+  background-color: var(--grey);
+  width: 100%;
 }
 
-.total-amount-box p, .total-items-box p, .total-value-box p {
-  margin: 0; /* Remove any default margins from the <p> elements */
-  line-height: 1.5; /* Adjust line-height if needed */
+.totals-box p {
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
 }
 
-
-.sales-container h2, .sales-container h3 {
-  color: var(--darkblue);
+.totals-box strong {
+  font-size: 10px;
 }
 
+.totals-box span {
+  font-size: 10px;
+}
+
+/* Label and input fields styling */
 .sales-container label {
   display: block;
   margin-bottom: 5px;
@@ -96,10 +101,10 @@
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
-  /* border: 1px solid var(--blue); */
   border-radius: 5px;
 }
 
+/* Buttons styling */
 .sales-container button {
   background-color: var(--lightblue);
   color: var(--black);
@@ -108,95 +113,113 @@
   border-radius: 5px;
   cursor: pointer;
   margin: 5px;
-  float: right;
 }
 
 .sales-container button:hover {
   background-color: var(--blue);
   color: var(--white);
 }
-.sales-container form div{
+
+/* Inline fields styling */
+.inline-fields {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding-bottom: 10px;
 }
-.inline-fields {
-  display: flex; /* Display all items inline */
-  justify-content: space-between; /* Evenly distribute space between items */
-  align-items: center; /* Align items vertically */
-  gap: 0px; /* Add spacing between elements */
-}
+
+/* Product and price section */
 .product-section, .price-section {
   display: flex;
   flex-direction: column;
-  width: 150px; /* Adjust width to fit on the same line */
+  width: 150px;
 }
+
+.price-section {
+  text-align: left;
+}
+
+.price-section p, .product-section p {
+  margin: 0;
+  font-size: 10px;
+}
+
+/* Barcode input and button styling */
+.barcode-section {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+  margin-left: 20px;
+}
+
 .barcode-scan-section {
   display: flex;
-  align-items: center; /* Vertically align the input and button */
-  gap: 10px; /* Add space between the input and the button */
+  align-items: center;
+  gap: 0px;
 }
+
+.barcode-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
 #Barcode {
-  width: 70%; /* Adjust input width to fit with button */
-  padding: 10px;
-  margin-right: 10px;
-  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-right: none;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 0 0 5px;
+  width: 100%;
+  margin: 0;
 }
-#scanB{
-  width: 20%;
-  float: none;
-  padding: 10px;
-}
-.product-section p, .price-section p {
-  margin: 0; /* Ensure no additional margin for <p> */
-}
-#Price {
-  text-align: right; /* Align price to the right if necessary */
-}
-/* total-amount to be fixed as a block in the sales-container */
+
+#scanB {
+  border-radius: 0 5px 5px 0; /* Rounded right corners */
+   cursor: pointer;
+   border: 1px solid #ccc; /* Match border with the input */
+   border-left: none; /* Remove left border to merge with the input */
+   outline: none; /* Remove default focus outline */
+   margin: 0; 
+   border-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ }
+
+/* Total amounts styling */
 .total-amount {
   display: flex;
   flex-direction: column;
-  margin-bottom: 0; /* Ensures space between the header and the amount */
+  /* gap: 10px; */
+  align-items: center;
+  width: 100%;
 }
+
 .total-amount div {
   display: flex;
-  align-items: center; /* Vertically align label and input */
   justify-content: space-between;
-  margin-bottom: 0; /* Adds spacing between each label-input pair */
+  align-items: center;
 }
 
 .total-amount label {
-  flex-basis: 50%; /* Label takes 50% of the width */
-  margin-right: 0px;
-  text-align: right; /* Align label text to the right */
+  flex-grow: 1;
+  text-align: left;
   font-size: 10px;
-}
-.total-amount p {
-  font-size: 10px;
-  background-color: var(--lightgrey);
-  border-radius: 5px;
-  text-align: center;
-  width: 100%;
   margin: 0;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  padding-right: 10px;
+  width: 100px;
 }
 
-#Subtotal, #Tax, #Total {
+.total-amount p {
+  text-align: right;
   font-size: 10px;
-  padding: 10px;
-  background-color: var(--lightgrey);
-  border-radius: 5px;
-  margin-bottom: 10px;
-  width: 20%;
-  text-align: center;
+  margin: 0;
+  padding-left: 10px;
+  border-left: 1px solid var(--blue);
+  width: 100px;
 }
 
-.total-counter {
-  text-align: center;
-  margin-bottom: 10px; /* Ensures space between the header and the counter */
-}
-
+/* Related items styling */
 .related-items {
   display: flex;
   justify-content: space-around;
@@ -207,128 +230,331 @@
   text-align: center;
 }
 
-.product-image {
+/* .product-image {
   width: 100px;
   height: auto;
+} */
+.product-image, .no-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+/* Description container */
+#Description {
+  font-size: 10px;
+  padding: 3px;
+  max-height: 150px; /* Set max height for scrollable area */
+  height: 100px;
+  width: 100%;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  background-color: var(--lightgrey);
+  border-radius: 5px;
+  overflow-y: auto;
+}
+/* Label styling */
+.sales-container label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--darkblue);
+  font-size: 12px; /* Set font size to 12px */
 }
 
-.error-message {
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-  #Description {
-    font-size: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: var(--lightgrey);
-    border-radius: 5px;
-    min-height: 260px; /* Adjust this as needed */
-    max-height: 300px; /* Fixed height for description */
-    overflow-y: auto; /* Scrollbar for overflowing content */
-
-}
-
+/* Description content */
 .description-container p {
-  display: block; /* Ensures each <p> takes up the full width */
-  margin-bottom: 8px; /* Adds space between each key-value pair */
-  line-height: 1.5; /* Improves readability by adding spacing between lines */
-  word-wrap: break-word; /* Ensures long text breaks properly */
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  background-color: var(--lightgrey);
+  overflow-y: auto; /* Apply scroll to the wrapper */
 }
 
+/* Sales ticket container */
 #Sales {
   font-size: 10px;
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: var(--lightgrey);
-  min-height: 300px;
-  max-height: 300px;
-  overflow-y: auto; /* If the sales ticket gets long, add a scroll bar */
+  min-height: 340px;
+  max-height: 340px;
+  overflow-y: auto;
   border-radius: 5px;
 }
-/* Sales Ticket container with fixed height and scrollbar */
+
+/* Sales ticket container with scrollbar */
 .sales-ticket-container {
   font-size: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background-color: var(--lightgrey);
-  min-height: 250px;
-  max-height: 250px; /* Fixed height for sales ticket */
-  overflow-y: auto; /* Scrollbar for overflowing content */
+  min-height: 400px; /* Increase the min-height to make it taller */
+  max-height: 400px; /* Increase the max-height accordingly */
+  width: 90%;
+  overflow-y: auto;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
-/* Style the ordered list for the cart */
+
+/* Sales ticket list */
 .sales-ticket-container ol {
-  padding-left: 20px; /* Indent the list items */
-  list-style-type: decimal; /* Show numbers before each item */
+  padding-left: 0px;
+  list-style-type: decimal;
   margin: 0;
   padding: 0;
 }
 
-/* Style each list item in the sales ticket */
+/* Sales ticket list items */
 .sales-ticket-container li {
   display: flex;
-  justify-content: space-between; /* Align item name and remove button */
-  align-items: center; /* Vertically align item name and remove button */
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-/* Ensure the cart item text and button are aligned */
 .sales-item p {
   margin: 0;
-  flex-grow: 1; /* Allow the item name to grow */
+  flex-grow: 1;
+  word-wrap: break-word;
+  padding-right: 0px;
 }
 
-/* Style the remove button */
-.sales-item button {
+/* Remove button */
+.sales-ticket-container .remove-btn {
+  background-color: red !important;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.sales-ticket-container .remove-btn:hover {
+  background-color: darkred !important;
+}
+
+/* Divider */
+.divider {
+  border: 1px solid var(--blue);
+  margin: 20px 0;
+}
+
+/* Content wrapper for description, images, and related items */
+.content-wrapper {
+  display: block;
+  /* justify-content: space-between; */
+  gap: 20px;
+  padding: 10px 20px 0 20px;
+  width: 100%;
+  /* flex-wrap: wrap; */
+}
+/* Common styling for the sections */
+.pictures-wrapper {
+  width: 100%; /* Take up full width */
+  margin-bottom: 20px; /* Add spacing between sections */
+  padding: 15px; /* Consistent padding for all sections */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: var(--lightgrey);
+}
+.related-items-wrapper {
+  width: 100%; /* Take up full width */
+  margin-bottom: 8  px; /* Add spacing between sections */
+  padding: 15px; /* Consistent padding for all sections */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  background-color: var(--lightgrey);
+}
+.description-wrapper {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 5px 5px 5px;
+  background-color: var(--lightgrey);
+  max-height: 150px; /* Set max height to keep the scroll behavior consistent */
+  }
+/* Description section */
+/* .description-wrapper {
+  flex-grow: 1;
+  flex-basis: 40%;
+  border-radius: 5px;
+  min-height: 100px;
+} */
+/* Product images section */
+/* .product-images-wrapper {
+  flex-grow: 1;
+  flex-basis: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--lightgrey);
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  min-height: 100px;
+} */
+
+/* Related items section */
+/* .related-items-wrapper {
+  flex-grow: 1;
+  flex-basis: 30%;
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  justify-content: flex-start; 
+  background-color: var(--lightgrey);
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  max-height: 100px;
+  overflow-y: auto; 
+} */
+
+/* Related items grid */
+/* .related-items-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  justify-items: center;
+} */
+.related-items-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 100px;
+  min-height: 100px; /* Set the height limit */
+  max-height: 100px; /* Set the height limit */
+  overflow-y: ; /* Only show part of the grid */
+}
+
+/* Related item */
+.related-item {
+  text-align: center;
+  background-color: var(--lightgrey);
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+/* Product image */
+/* .product-image {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+  object-fit: cover;
+  border-radius: 5px;
+} */
+
+/* No image placeholder */
+.no-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  font-size: 10px;
+  color: #888;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 5px;
+  padding-top: 8px;
+}
+
+.clear-btn, .add-to-cart-btn {
   background-color: var(--lightblue);
   color: var(--black);
-  padding: 5px 10px;
+  padding: 5px 15px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.sales-item button:hover {
+.clear-btn:hover, .add-to-cart-btn:hover {
   background-color: var(--blue);
   color: var(--white);
 }
 
-.divider {
-  border: 1px solid var(--blue); /* Set the color and thickness of the line */
-  margin: 20px 0; /* Adjust the spacing around the line */
-}
-.description-wrapper, .sales-ticket-wrapper {
+/* Payment buttons */
+.payment-buttons {
   display: flex;
-  flex-direction: column; /* Stack the label and container vertically */
-  margin-bottom: 20px; /* Add some space between sections */
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.description-wrapper label, .sales-ticket-wrapper label {
-  margin-bottom: 5px; /* Add space between the label and the container */
-  font-size: 12px; /* Adjust label size if needed */
+.cancel-btn, .pay-btn {
+  background-color: var(--lightblue);
+  color: var(--black);
+  padding: 5px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.description-container {
+.cancel-btn:hover, .pay-btn:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+/* Scrollable container for product pictures */
+/* .pictures-scroll-container {
+  width: 500px;  
+  max-height: 100px;
+  overflow-x: auto;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--lightgrey);
+
+  flex-grow: 1;
+  flex-basis: 40%;
+  padding: 10px;
+  border-radius: 5px;
+  min-height: 100px;
+} */
+
+/* Pictures grid */
+.pictures-grid-container, .related-items-container{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Maximum of 5 columns */
+  gap: 10px;
+  max-height: 100px; /* Set max height to fit all items */
+  overflow-y: auto; /* Allow vertical scrolling if items exceed the limit */
+  width: 100%;
+  grid-auto-flow: row dense; /* Ensure it fills rows first */
+}
+.pictures-grid-container .grid-item, 
+.related-items-container .grid-item {
+  text-align: center;
+  background-color: var(--lightgrey);
   padding: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: var(--lightgrey);
   border-radius: 5px;
-  min-height: 260px;
-  max-height: 300px;
-  overflow-y: auto; /* Enable scrolling if content overflows */
 }
-
-.sales-ticket-container {
-  font-size: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-color: var(--lightgrey);
-  min-height: 250px;
-  max-height: 300px;
-  overflow-y: auto;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column; /* Ensure items stack vertically */
-  justify-content: flex-start; /* Align items to the top */
+/* Limit the grid items to 5 for product pictures and related items */
+.pictures-grid-container .grid-item:nth-child(n+6), 
+.related-items-container .grid-item:nth-child(n+6) {
+  display: none; /* Hide any item beyond the 5th one */
+}
+/* For product images */
+.pictures-grid-container .grid-item img, 
+.related-items-container .grid-item img {
+  width: 100%; /* Make the image take up the full width of the grid item */
+  height: 100%; /* Make the image take up the full height of the grid item */
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+  border-radius: 5px; /* Add rounded corners */
 }

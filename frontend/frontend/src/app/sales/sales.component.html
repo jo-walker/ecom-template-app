@@ -7,31 +7,7 @@
       <h6>Logged in as: {{ username }}</h6>
       <button id="logout" (click)="logout()">Logout</button>
     </div>
-  </div>
-
-  <div class="totals-container">
-    <!-- Items + Count group -->
-    <div class="totals-box">
-      <div class="total-amount-box">
-        <p><strong>Items:</strong></p>
-      </div>
-      <div class="total-value-box">
-        <p><span>{{ totalItems }}</span></p>
-      </div>
-    </div>
-  
-    <!-- Amount + Value group -->
-    <div class="totals-box">
-      <div class="total-items-box">
-        <p><strong>Amount:</strong></p>
-      </div>
-      <div class="total-value-box">
-        <p><span>{{ Total | currency }}</span></p>
-      </div>
-    </div>
-  </div>
-  
-  
+  </div>  
 
   <div class="sales-wrapper">
     <!-- Left side (2/3): Barcode scan, Description, Picture, Related Items -->
@@ -42,14 +18,16 @@
           <!-- Barcode scanner input and Scan button -->
           <div class="barcode-section">
             <label for="Barcode">Scan or Key in Code</label>
+            <div class="barcode-input-wrapper">
             <input type="text" id="Barcode" [(ngModel)]="Barcode" name="Barcode" required>
             <button id="scanB" type="button" (click)="scan()">Scan</button>
+            </div>
           </div>
     
           <!-- Product details section -->
           <div class="product-section">
             <label for="Name">Product Name</label>
-            <p id="Name"><strong>{{ Name }}</strong></p>
+            <p id="Name"><strong>{{ Name || '---' }}</strong></p> 
           </div>
     
           <!-- Price display -->
@@ -58,10 +36,10 @@
             <p id="Price"><strong>{{ Price | currency:'CAD':'symbol-narrow' }}</strong></p>
           </div>
         </div>
-    
+    <div class="content-wrapper">
         <!-- Description Section -->
         <div class="description-wrapper">
-          <label for="Description">Description</label>
+          <label for="Description"><strong>Description</strong></label>
           <div id="Description" class="description-container">
             <p><strong>Color:</strong> {{ color }}</p>
             <p><strong>Material:</strong> {{ kind }}</p>
@@ -72,31 +50,88 @@
           </div>
         </div>
     
-        <!-- Picture Section -->
-        <div class="picture-wrapper">
-          <img [src]="Picture" alt="Product Picture">
-        </div>
-    
-        <!-- Related Items Section -->
-        <div class="related-items-wrapper">
-          <label for="Related">Related Items</label>
-          <div id="Related" class="related-items-container">
-            <ul>
-              <li *ngFor="let item of RelatedItems">
-                <span>{{ item.name }} - {{ item.price | currency:'CAD':'symbol-narrow' }}</span>
-              </li>
-            </ul>
+<!-- Picture Section -->
+<div class="pictures-wrapper">
+  <label for="Pictures"><strong>Product Pictures</strong></label>
+  <div id="Pictures" class="pictures-scroll-container">
+    <div class="pictures-grid-container">
+      <!-- Loop through scanned product pictures -->
+      <div *ngFor="let picture of productPictures" class="grid-item">
+        <img *ngIf="picture; else noImage" [src]="picture" alt="Scanned Product Picture">
+        <ng-template #noImage>
+          <div class="no-image">No image available</div>
+        </ng-template>
+      </div>
+
+      <!-- Placeholder grids to fill empty slots -->
+      <div *ngFor="let empty of emptyGrids" class="grid-item">
+        <div class="no-image">No image available</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <!-- Related Items Section -->
+    <div class="related-items-wrapper">
+      <label for="Related"><strong>Related Items</strong></label>
+      <div id="Related" class="related-items-scroll-container">
+        <div class="related-items-container">
+          <!-- Loop through actual related items -->
+          <div *ngFor="let item of RelatedItems" class="grid-item">
+            <img *ngIf="item.imageUrl; else noImage" [src]="item.imageUrl" alt="{{ item.name }}">
+            <ng-template #noImage>
+              <div class="no-image">No image available</div>
+            </ng-template>
+            <p>{{ item.name }} - {{ item.price | currency:'CAD':'symbol-narrow' }}</p>
+          </div>
+          
+          <!-- Add placeholder items to fill the remaining grid slots -->
+          <div *ngFor="let empty of emptyGrids" class="grid-item">
+            <div class="no-image">No image available</div>
+            <p>---</p> <!-- Placeholder text -->
           </div>
         </div>
+      </div>
+    </div>
+
+  </div>     
     
-        <!-- Add to Cart button (this triggers adding the product to the cart) -->
+      <!-- Add to Cart and Clear buttons -->
+      <div class="action-buttons">
+        <button type="button" (click)="clearScannedItem()">Clear</button>
         <button type="button" (click)="addToCart()">Add to Cart</button>
+      </div>
+
       </form>
     </div>
     
     
     <!-- Right side (1/3): Sales ticket, Subtotal, Tax, Total, Pay/Cancel -->
     <div class="right-side">
+      <div class="totals-container">
+        <!-- Items + Count group -->
+        <div class="totals-box">
+          <div class="total-amount-box">
+            <p><strong>Items:</strong></p>
+          </div>
+          <div class="total-value-box">
+            <p><strong>{{ totalItems }}</strong></p>
+          </div>
+        </div>
+      
+        <!-- Amount + Value group -->
+        <div class="totals-box">
+          <div class="total-items-box">
+            <p><strong>Amount:</strong></p>
+          </div>
+          <div class="total-value-box">
+            <p><strong>{{ Total | currency }}</strong></p>
+          </div>
+        </div>
+      </div>
+
       <form (ngSubmit)="pay()">
       <!-- Sales Ticket Section -->
       <div class="sales-ticket-wrapper">
@@ -104,10 +139,9 @@
         <div id="Sales" class="sales-ticket-container">
           <ol>
             <li *ngFor="let item of cart; let i = index" class="sales-item">
-              <span>{{ i + 1 }}. <!-- Display the item number manually -->
-                {{ item.name }} - {{ item.price | currency:'CAD':'symbol-narrow' }}</span>
-              <button (click)="removeItem(i)">Remove</button>
-            </li>
+              <span>{{ i + 1 }}. {{ item.sku }} {{ item.name }} - {{ item.price | currency:'CAD':'symbol-narrow' }}</span>
+              <button class="remove-btn" (click)="removeItem(i)">&times;</button>
+            </li>            
           </ol>
         </div>
       </div>
@@ -117,20 +151,23 @@
         <!-- // Subtotal, Tax, and Total Amount fields to be fixed as one block -->
         <div class="total-amount">
           <div>
-            <label for="Subtotal">Subtotal</label>
+            <label id="subtotallabel" for="Subtotal">Subtotal</label>
             <p id="Subtotal">{{ Subtotal | currency:'CAD':'symbol-narrow' }}</p> <!-- Subtotal displayed as a paragraph -->
           </div>
           <div>
-            <label for="Tax">Tax Amount (13%)</label>
+            <label id="taxlabel" for="Tax">Tax Amount (13%)</label>
             <p id="Tax">{{ Tax | currency:'CAD':'symbol-narrow' }}</p> <!-- Tax displayed as a paragraph -->
           </div>
           <div>
-            <label for="Total">Total Amount</label>
+            <label id="totallabel" for="Total">Total Amount</label>
             <p id="Total">{{ Total | currency:'CAD':'symbol-narrow' }}</p> <!-- Total displayed as a paragraph -->
           </div>
         </div>
-        <button type="submit">Pay</button>
+        <div class="action-buttons">
+          <button type="submit">Pay</button>
         <button type="button" (click)="cancel()">Cancel</button>
+      </div>
+  
       </form>
     </div>
   </div>

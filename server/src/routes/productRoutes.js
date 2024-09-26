@@ -67,12 +67,8 @@ router.delete('/products/:id', async (req, res) => {
 
 // Route to fetch product by UPC or EAN (barcode)
 router.get('/products/:barcode', async (req, res) => { //:barcode is the parameter meaning it can be anything after /products/
-  // console.log('Fetching product with barcode:', req.params.barcode);
-
-  const { barcode } = req.params; // Fixed the parameter name
-  
+  const { barcode } = req.params; // Fixed the parameter name  
   try {
-    // Search for the product by UPC or EAN
     const product = await Product.findOne({
       where: {
         [Op.or]: [
@@ -82,22 +78,19 @@ router.get('/products/:barcode', async (req, res) => { //:barcode is the paramet
         ]
       }
     });
-
-    // Log product data to ensure it's fetched correctly
-    console.log('Product fetched:', product);
-
-    // If product is found, return it
     if (product) {
+      const linkedPictures = product.linked_pictures ? JSON.parse(product.linked_pictures) : [];
       res.json({
         product,
-        price: product.selling_price // price inside `selling_price` field as JSON
+        price: product.selling_price,
+        linked_pictures: linkedPictures
       });
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
   } catch (err) {
+    console.error('Error fetching product:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
-
 module.exports = router;

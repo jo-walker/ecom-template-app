@@ -8,6 +8,7 @@ const paymentRoutes = require('./routes/paymentRoutes'); // Payment routes
 const orderRoutes = require('./routes/orderRoutes'); // Order routes
 const cartRoutes = require('./routes/cartRoutes'); // Cart routes
 const authRoutes = require('./routes/authRoutes'); // Auth routes
+const transactionRoutes = require('./routes/transactionRoutes'); // Transaction routes
 const Order = require('./models/Order'); // Import models
 const Cart = require('./models/Cart');
 const Product = require('./models/Product'); // Import models
@@ -41,6 +42,7 @@ app.use('/api', paymentRoutes);  // This is for payment routes
 app.use('/api', orderRoutes);    // This is for order routes
 app.use('/api', cartRoutes);     // This is for cart routes
 app.use('/api', authRoutes);     // This is for auth routes
+app.use('/api', transactionRoutes);  // This is for transactions routes
 
 // Start the server
 const PORT = process.env.PORT || 3000;

@@ -1,0 +1,23 @@
+<div class="receipt">
+    <h1>Receipt</h1>
+    <p><strong>Transaction ID:</strong> {{transactionData.transaction_id}}</p>
+    <p><strong>Date:</strong> {{transactionData.transaction_date | date}}</p>
+    <h2>Items:</h2>
+    <ul>
+      <li *ngFor="let item of transactionData.items">
+        {{item.name}} - {{item.price | currency}}
+      </li>
+    </ul>
+    <p><strong>Subtotal:</strong> {{transactionData.subtotal | currency}}</p>
+    <p><strong>Tax:</strong> {{transactionData.tax | currency}}</p>
+    <p><strong>Total:</strong> {{transactionData.total | currency}}</p>
+    <p><strong>Payment Method:</strong> {{transactionData.payment_method}}</p>
+    <p><strong>Cash Received:</strong> {{transactionData.cash_received | currency}}</p>
+    <p><strong>Change:</strong> {{transactionData.change | currency}}</p>
+  
+    <!-- Buttons for printing and emailing, hidden during print -->
+    <div class="no-print">
+      <button (click)="printReceipt()">Print Receipt</button>
+      <button (click)="emailReceipt()">Email Receipt</button>
+    </div>
+  </div>

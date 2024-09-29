@@ -5,6 +5,8 @@ import { PaymentService } from '../../services/payment.service';
 import { Router } from '@angular/router';
 import { ViewEncapsulation } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { PaymentPopupComponent } from '../payment-popup/payment-popup.component';
 
 // Define the interface for description data
 interface DescriptionData {
@@ -52,7 +54,8 @@ export class SalesComponent {
     private productService: ProductService,
     private paymentService: PaymentService,
     private router: Router,
-    private cdr: ChangeDetectorRef //to trigger change detection 
+    private cdr: ChangeDetectorRef, //to trigger change detection 
+    public dialog: MatDialog
   ) {
     this.username = this.authService.getUsername(); // Assuming AuthService has a method to get the username
   }
@@ -129,6 +132,7 @@ export class SalesComponent {
         price: this.Price,
         sku: this.Barcode,
       });
+      console.log("Cart:", this.cart);  // Log the cart to ensure the items are being added
       this.updateSalesInfo();
       this.clearInputFields();
     } else {
@@ -156,25 +160,31 @@ export class SalesComponent {
     this.totalItems = this.cart.length;
   }  
 
-  // Simulate the payment process
   pay() {
-    const paymentData = {
-      subtotal: this.Subtotal,
-      tax: this.Tax,
-      total: this.Total,
-      items: this.cart,
-    };
-
-    this.paymentService.processPayment(paymentData).subscribe(
-      (response) => {
-        alert('Payment completed!');
+    this.dialog.open(PaymentPopupComponent, {
+      width: '400px', 
+      data: { totalAmount: this.Total,
+              subtotal: this.Subtotal,  // Pass subtotal
+              tax: this.Tax,  // Pass tax
+              items: this.cart
+       }, // Pass the total amount to the popup
+      disableClose: true // prevents closing the modal by clicking outside of it
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Payment Details:', result);
+        if (result.paymentType === 'cash') {
+          console.log('Change:', result.change);
+          alert(`Payment completed! Change: ${result.change}`);
+        } else {
+          alert('Payment completed!');
+        }
         this.resetCart(); // Reset the cart after payment
-      },
-      (error) => {
-        this.error = 'Payment failed';
+      } else {
+        this.error = 'Payment cancelled!';
       }
-    );
+    });
   }
+  
 
   // Clears the input fields after adding to cart
   clearInputFields() {

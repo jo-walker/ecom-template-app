@@ -26,7 +26,8 @@
     "postgres": "^3.4.4",
     "sequelize": "^6.37.3",
     "server": "file:",
-    "square": "^38.1.0"
+    "square": "^38.1.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "sequelize-cli": "^6.6.2"

@@ -1,0 +1,74 @@
+/* General container styling for the popup */
+.popup-container {
+    background-color: var(--lightgrey);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 100%;
+    width: 400px; /* Set a fixed width */
+    margin: 0 auto;
+    font-size: 14px;
+  }
+  
+  /* Header styling for the popup */
+  .popup-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--darkblue);
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    color: var(--white);
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+  
+  /* Payment options and input styling */
+  .popup-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .popup-body label {
+    font-size: 14px;
+    color: var(--darkblue);
+  }
+  
+  .popup-body select,
+  .popup-body input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  /* Change and total amount styling */
+  .popup-body p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--darkblue);
+  }
+  
+  /* Buttons styling */
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .popup-buttons button {
+    background-color: var(--lightblue);
+    color: var(--black);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .popup-buttons button:hover {
+    background-color: var(--blue);
+    color: var(--white);
+  }  

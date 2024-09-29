@@ -1,0 +1,28 @@
+<div class="popup-container">
+    <div class="popup-header">
+      <h2>Payment</h2>
+    </div>
+  
+    <div class="popup-body">
+      <label for="paymentType">Select Payment Method:</label>
+      <select [(ngModel)]="paymentType" id="paymentType">
+        <option value="credit">Credit Card</option>
+        <option value="cash">Cash</option>
+      </select>
+  
+      <div *ngIf="paymentType === 'cash'">
+        <label for="cashReceived">Cash Received:</label>
+        <input type="number" [(ngModel)]="cashReceived" (input)="calculateChange()" id="cashReceived">
+      </div>
+  
+      <div *ngIf="paymentType === 'cash'">
+        <p><strong>Total Amount:</strong> {{ data.totalAmount | currency }}</p>
+        <p><strong>Change:</strong> {{ change | currency }}</p>
+      </div>
+    </div>
+  
+    <div class="popup-buttons">
+      <button (click)="onConfirmPayment()">Confirm Payment</button>
+      <button (click)="onClose()">Cancel</button>
+    </div>
+  </div>  

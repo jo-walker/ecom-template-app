@@ -1,0 +1,27 @@
+/* General styling for receipt view */
+.receipt {
+    width: 300px;
+    margin: auto;
+    text-align: left;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  /* Hide buttons and unnecessary elements when printing */
+  @media print {
+    .no-print {
+      display: none; /* Hides elements with this class when printing */
+    }
+  
+    .receipt {
+      width: 100%; /* Expand receipt width for print */
+      border: none; /* Remove borders for print */
+      background-color: #fff; /* Ensure background is white */
+    }
+  
+    /* Make text darker for print */
+    body, .receipt {
+      color: black;
+    }
+  }  

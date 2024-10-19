@@ -2,14 +2,15 @@ const fs = require('fs');
 const csv = require('csv-parser');
 const Product = require('../models/Product'); // Import your Product model
 const { generateSKU } = require('./skuUtils');
-// const fs = require('fs');
-// const path = 'C:/Projects/ecom/externals/Copy Of Tb_product_db1.csv';
-const path ='C:\Projects\ecom\externals\Copy Of Tb_product_dbWithBarcodeField.csv';
+
+// Update your file path accordingly
+const path = 'C:/Projects/ecom/externals/Copy Of Tb_product_dbWithBarcodeField.csv';
+
 if (fs.existsSync(path)) {
-    console.log('File exists, starting to read...');
-    readAndInsertCSV(path);
+  console.log('File exists, starting to read...');
+  readAndInsertCSV(path);
 } else {
-    console.error('File does not exist:', path);
+  console.error('File does not exist:', path);
 }
 
 // Define function to read CSV and process data
@@ -42,16 +43,24 @@ function readAndInsertCSV(filePath) {
           StyleName: row.StyleName || null, // Handle possible missing StyleName
           Description: row.Description || null, // Handle possible missing Description
           weight: row.weight || null,
-          sex: row.sex || null
+          sex: row.sex || null,
+          barCode: row.barCode || null, // New field for barcode
+          barCodePrint: row.barCodePrint || null, // New field for barcode printing
+          print_bar: row.print_bar || null // New field for print_bar
         });
 
         const vendor = JSON.stringify({ company_id: row.company_id });
         const selling_price = JSON.stringify({
           price_MGL: row.price_MGL || null,
           unitprice_Cnd: row.unitprice_Cnd || null,
-          sellsPrice: sellsPrice || null
+          sellsPrice: sellsPrice || null,
+          TransportCostUnit: row.TransportCostUnit || null // New field for transport cost
         });
-        const stock = JSON.stringify({ Qty: row.Qty || null });
+
+        const stock = JSON.stringify({
+          Qty: row.Qty || null,
+          Qty_sold: row.Qty_sold || null // New field for Qty_sold
+        });
 
         // Insert product data into PostgreSQL using your Product model
         const product = await Product.create({
@@ -63,7 +72,9 @@ function readAndInsertCSV(filePath) {
           selling_price,
           stock,
           size: JSON.stringify({ size: row.size || null }), // Add size information as JSON
-          status: 'active' // Default to 'active' for all insertions
+          status: 'active', // Default to 'active' for all insertions
+          workField: row.workField || null, // New field for workField
+          extra: row.extra || null // New field for extra
         });
 
         console.log(`Inserted product with SKU: ${product.SKU}`);

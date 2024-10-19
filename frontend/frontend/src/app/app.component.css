@@ -82,3 +82,8 @@ a:hover {
     color: var(--blue);
     text-decoration: underline;
 }
+.active-link {
+    font-weight: bold;
+    color: blue;
+  }
+  

@@ -9,3 +9,32 @@
   .logo {
     filter: invert(100%) brightness(100) contrast(100%);
 }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu h6 {
+  margin: 0 15px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.menu h6.active {
+  font-weight: bold;
+  color: #000; /* Or any color you prefer for the active link */
+}
+
+.logo {
+  height: 50px; /* Adjust as needed */
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+#logout {
+  margin-left: 20px;
+}

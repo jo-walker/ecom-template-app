@@ -64,24 +64,25 @@ export class PaymentPopupComponent {
 
       // Call the backend to record the transaction
       this.paymentService.recordTransaction(transactionData).subscribe(response => {
-        this.dialogRef.close({ paymentType: this.paymentType, cashReceived: this.cashReceived, change: this.change });
         console.log('Transaction recorded successfully:', response);
-
-          // Ensure the transaction ID is included in the response
-          if (response && response.transactionId) {
-            // Store the transaction ID in the transaction data
-            transactionData.transactionId = response.transactionId;
-          }
-          
-      // Store the transaction data in the PaymentService
-      this.paymentService.setTransactionData(transactionData);
-
-      // Navigate to the receipt page
-      this.router.navigate(['/receipt']);
+        
+        // Ensure the transaction ID is included in the response
+        if (response && response.transactionId) {
+          // Store the transaction ID in the transaction data
+          transactionData.transactionId = response.transactionId;
+          console.log('Transaction ID:', transactionData.transactionId); // Debug the transactionId
+        } else {
+          console.error('Transaction ID not found in response:', response);
+        }
+        
+        // Store the transaction data in the PaymentService
+        this.paymentService.setTransactionData(transactionData);
+        
+        // Navigate to the receipt page
+        this.router.navigate(['/receipt']);
       }, error => {
         console.error('Error recording transaction:', error);
-      });
+      });     
     }
   }
-  
 }

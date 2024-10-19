@@ -1,7 +1,10 @@
 <div class="receipt">
     <h1>Receipt</h1>
-    <p><strong>Transaction ID:</strong> {{transactionData.transaction_id}}</p>
-    <p><strong>Date:</strong> {{transactionData.transaction_date | date}}</p>
+  <!-- Display the Transaction ID -->
+  <p><strong>Transaction ID:</strong> {{ transactionData?.transactionId || 'N/A' }}</p>
+  
+  <!-- Display the transaction date -->
+  <p><strong>Date:</strong> {{ transactionData?.transaction_date || 'N/A' }}</p>
     <h2>Items:</h2>
     <ul>
       <li *ngFor="let item of transactionData.items">

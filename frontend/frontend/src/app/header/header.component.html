@@ -1,3 +1,15 @@
 <header class="header-container">
     <img src="https://cashmerecasa.com/wp-content/uploads/2023/03/tracedLogoCCwithLayers.png" alt="Cashmere Casa logo" class="logo">
-</header>
+    
+    <!-- Navigation Menu -->
+    <nav class="menu">
+      <h6 [routerLink]="['/sales']" routerLinkActive="active">Sales</h6>
+      <h6 [routerLink]="['/refund']" routerLinkActive="active">Refunds</h6>
+    </nav>
+    
+    <div class="header-right">
+      <h6>Logged in as: {{ username }}</h6>
+      <button id="logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+  

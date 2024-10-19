@@ -13,6 +13,7 @@ const Order = require('./models/Order'); // Import models
 const Cart = require('./models/Cart');
 const Product = require('./models/Product'); // Import models
 const Category = require('./models/Category');
+const Transaction = require('./models/Transaction');
 const User = require('./models/User');
 const ProductCategory = require('./models/ProductCategory');
 

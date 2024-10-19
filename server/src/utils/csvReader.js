@@ -3,8 +3,8 @@ const csv = require('csv-parser');
 const Product = require('../models/Product'); // Import your Product model
 const { generateSKU } = require('./skuUtils');
 // const fs = require('fs');
-const path = 'C:/Projects/ecom/externals/Copy Of Tb_product_db1.csv';
-
+// const path = 'C:/Projects/ecom/externals/Copy Of Tb_product_db1.csv';
+const path ='C:\Projects\ecom\externals\Copy Of Tb_product_dbWithBarcodeField.csv';
 if (fs.existsSync(path)) {
     console.log('File exists, starting to read...');
     readAndInsertCSV(path);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Transaction = require('../models/Transaction'); 
+const Transaction = require('../models/Transactions'); 
 const { v4: uuidv4 } = require('uuid');
 
 router.post('/transactions', async (req, res) => {
@@ -30,6 +30,21 @@ router.post('/transactions', async (req, res) => {
   } catch (error) {
     console.error('Error recording transaction:', error);
     res.status(500).json({ error: 'Failed to record transaction' });
+  }
+});
+// Fetch transaction by transaction_id
+router.get('/transactions/:transactionId', async (req, res) => {
+  try {
+    const transaction = await Transaction.findOne({ transaction_id: req.params.transactionId });
+    
+    if (!transaction) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+    
+    res.status(200).json(transaction);
+  } catch (error) {
+    console.error('Error fetching transaction:', error);
+    res.status(500).json({ error: 'Failed to fetch transaction' });
   }
 });
 

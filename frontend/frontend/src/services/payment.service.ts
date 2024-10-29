@@ -28,7 +28,10 @@ export class PaymentService {
     getTransactionData(): any {
       return this.transactionData;
     }
-  
+    getTransactionById(transactionId: string): Observable<any> {
+      return this.http.get(`${this.baseUrl}/transactions/${transactionId}`);
+    }
+    
     // Clear the stored transaction data (optional)
     clearTransactionData(): void {
       this.transactionData = null;

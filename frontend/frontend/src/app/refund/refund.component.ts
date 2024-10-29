@@ -3,7 +3,7 @@
 import { Component } from '@angular/core';
 import { PaymentService } from '../../services/payment.service';
 import { Router } from '@angular/router';
-import { Transaction, Item } from '../models/transaction.model'; // Adjust path based on your directory structure
+import { Transaction, Item } from '../models/transactions.model'; // Adjust path based on your directory structure
 
 @Component({
   selector: 'app-refund',
@@ -30,10 +30,10 @@ export class RefundComponent {
             alert('Transaction not found. Please check the Transaction ID.');
           }
         },
-        (error) => {
+        (error: any) => {
           console.error('Error fetching transaction for refund', error);
           alert('Error fetching transaction. Please try again.');
-        }
+        }        
       );
     }
   }

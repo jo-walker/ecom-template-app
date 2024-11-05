@@ -9,27 +9,24 @@ import { PaymentService } from '../../services/payment.service'; // Adjust the p
 })
 export class ReceiptComponent implements OnInit {
   transactionData: any;
+  receiptDate: Date | null = null;
 
   constructor(private router: Router, private paymentService: PaymentService) {}
 
   ngOnInit(): void {
-    // const navigation = this.router.getCurrentNavigation();
-    // // Use bracket notation to avoid TypeScript error
-    // this.transactionData = navigation?.extras?.state?.['transaction']; 
-    // const navigation = this.router.getCurrentNavigation();
-    // if (navigation && navigation.extras && navigation.extras.state) {
-    //   this.transactionData = navigation.extras.state['transaction'];
-    // } else {
-    //   this.transactionData = null;
-    // }
     this.transactionData = this.paymentService.getTransactionData();
     console.log('Transaction Data:', this.transactionData);
 
-    if (!this.transactionData) {
+    if (this.transactionData) {
+      // Assign the date only if transactionData exists
+      this.receiptDate = this.transactionData.date || new Date(); // Fallback to current date if date is not provided
+      console.log('Receipt Date:', this.receiptDate);
+    } else {
       alert('No transaction data found. Redirecting back to sales.');
       this.router.navigate(['/sales']);
     }
-      // clear transaction data after printing receipt
+
+    // Clear transaction data after displaying the receipt
     this.paymentService.clearTransactionData();
   }
 

@@ -4,8 +4,8 @@
   <p><strong>Transaction ID:</strong> {{ transactionData?.transactionId || 'N/A' }}</p>
   
   <!-- Display the transaction date -->
-  <p><strong>Date:</strong> {{ transactionData?.transaction_date || 'N/A' }}</p>
-    <h2>Items:</h2>
+  <p><strong>Date:</strong> {{ transactionData?.date || 'N/A' }}</p>
+  <h2>Items:</h2>
     <ul>
       <li *ngFor="let item of transactionData.items">
         {{item.name}} - {{item.price | currency}}

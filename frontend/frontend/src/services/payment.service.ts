@@ -1,4 +1,3 @@
-// path: frontend/src/services/payment.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -16,24 +15,32 @@ export class PaymentService {
   processPayment(paymentData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/checkout`, paymentData);
   }
+
+  // Function to record the transaction in the backend
   recordTransaction(transactionData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/transactions`, transactionData);
-  }  
-    // Store transaction data temporarily
-    setTransactionData(data: any): void {
-      this.transactionData = data;
-    }
-  
-    // Retrieve the stored transaction data
-    getTransactionData(): any {
-      return this.transactionData;
-    }
-    getTransactionById(transactionId: string): Observable<any> {
-      return this.http.get(`${this.baseUrl}/transactions/${transactionId}`);
-    }
-    
-    // Clear the stored transaction data (optional)
-    clearTransactionData(): void {
-      this.transactionData = null;
-    }
+  }
+
+  // Store transaction data temporarily and add a date if not present
+  setTransactionData(data: any): void {
+    this.transactionData = {
+      ...data,
+      date: data.date || new Date(), // Add the current date if not provided
+    };
+  }
+
+  // Retrieve the stored transaction data
+  getTransactionData(): any {
+    return this.transactionData;
+  }
+
+  // Fetch transaction details by ID
+  getTransactionById(transactionId: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/transactions/${transactionId}`);
+  }
+
+  // Clear the stored transaction data (optional)
+  clearTransactionData(): void {
+    this.transactionData = null;
+  }
 }

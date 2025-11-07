@@ -1,0 +1,84 @@
+<div class="sales-container">
+  <!-- Header with Sales, Refunds, and Logout buttons -->
+  <div class="header">
+    <h4>Sales</h4>
+    <h4>Refunds</h4>
+    <div class="header-right">
+      <h5>Logged in as: {{ username }}</h5>
+      <button id="logout" (click)="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Total item counter (Top middle of screen in a visible box) -->
+  <div class="totals-container">
+    <div class="total-amount-box">
+      <p><strong>Total items sold:</strong> <span style="font-size: 24px;"> {{ totalItems }}</span></p>
+    </div>
+    <div class="total-items-box">
+      <p><strong>Total amount sold:</strong> <span style="font-size: 24px;"> {{ Total | currency }}</span></p>
+    </div>
+  </div>
+  
+
+  <div class="sales-wrapper">
+    <!-- Left side (2/3): Barcode scan, Description, Picture, Related Items -->
+    <div class="left-side">
+      <form (ngSubmit)="scan()">
+        <div>
+          <label for="Barcode">Scan or Key in Code</label>
+          <input type="text" id="Barcode" [(ngModel)]="Barcode" name="Barcode" (keydown.enter)="scan()" required>
+          <!-- button option that also triggers scan() function -->
+          <button id="scanB" type="button" (click)="scan()">Scan</button>
+        </div>
+        <div>
+          <label for="Description">Description</label>
+          <!-- <textarea id="Description" [(ngModel)]="Description" name="Description" readonly>{{Description}}</textarea> -->
+          <p id="Description">{{Description}}</p>
+        </div>
+        <div>
+          <label for="Picture">Product Picture</label>
+          <img [src]="Picture" alt="Product Image" *ngIf="Picture" class="product-image">
+        </div>
+        <div>
+          <label for="Related">Related Items</label>
+          <div class="related-items">
+            <div *ngFor="let item of RelatedItems">
+              <img [src]="item.pictureUrl" alt="Related Item Image">
+              <p>{{ item.name }} - {{ item.price | currency }}</p>
+            </div>
+          </div>
+        </div>
+        <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+
+    <!-- Right side (1/3): Sales ticket, Subtotal, Tax, Total, Pay/Cancel -->
+    <div class="right-side">
+      <form (ngSubmit)="pay()">
+        <div>
+          <label for="Sales"><strong>Sales Ticket</strong></label>
+          <!-- <textarea id="Sales" [(ngModel)]="SalesTicket" name="SalesTicket" readonly>{{ SalesTicket }}</textarea> -->
+          <p id="Sales">{{SalesTicket}}</p>
+        </div>
+        <hr class="divider">  
+        <!-- // Subtotal, Tax, and Total Amount fields to be fixed as one block -->
+        <div class="total-amount">
+        <div>
+          <label for="Subtotal">Subtotal</label>
+          <input type="text" id="Subtotal" [(ngModel)]="Subtotal" name="Subtotal" readonly>
+        </div>
+        <div>
+          <label for="Tax">Tax Amount (13%)</label>
+          <input type="text" id="Tax" [(ngModel)]="Tax" name="Tax" readonly>
+        </div>
+        <div>
+          <label for="Total">Total Amount</label>
+          <input type="text" id="Total" [(ngModel)]="Total" name="Total" readonly>
+        </div>
+      </div>
+        <button type="submit">Pay</button>
+        <button type="button" (click)="cancel()">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>

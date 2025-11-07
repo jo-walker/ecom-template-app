@@ -1,0 +1,14 @@
+<!-- src/app/app.component.html -->
+<div class="app-container">
+  <app-header></app-header>
+  <div *ngIf="authService.isLoggedIn()">
+    <!-- Show logged-in content -->
+    <p>Welcome back!</p>
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <div class="layout-content">
+    <router-outlet></router-outlet>
+  </div>
+  <app-footer></app-footer>
+</div>

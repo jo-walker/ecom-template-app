@@ -6,6 +6,10 @@ yarn-error.log
 # Environment variables
 .env
 
+# db config
+server/src/config/database.js
+server\src\config\database.js
+
 # Logs
 logs/
 *.log

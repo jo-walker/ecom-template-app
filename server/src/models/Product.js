@@ -4,21 +4,59 @@ const sequelize = require("../config/database");
 const Product = sequelize.define(
   "Product",
   {
-    sku: {
-      type: DataTypes.STRING(15),
+    barcode: {
+      type: DataTypes.STRING(20),
       primaryKey: true,
       allowNull: false,
       unique: true,
+      comment:
+        "Auto-generated: CategoryCode + StyleNumber + SizeCode + ColorCode",
     },
-    name: {
-      type: DataTypes.STRING(100),
+    category_code: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      references: {
+        model: "Categories",
+        key: "code",
+      },
+    },
+    style_number: {
+      type: DataTypes.STRING(10),
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
+    size_code: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      references: {
+        model: "Sizes",
+        key: "code",
+      },
+    },
+    color_code: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      references: {
+        model: "Colors",
+        key: "code",
+      },
+    },
+
+    // Vendor & Pricing
+    vendor_name: {
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
-    price: {
+    vendor_sku: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      comment: "Vendor's product code",
+    },
+    cost_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+      defaultValue: 0.0,
+    },
+    retail_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       defaultValue: 0.0,
@@ -28,9 +66,16 @@ const Product = sequelize.define(
       allowNull: false,
       defaultValue: 0,
     },
-    image_url: {
-      type: DataTypes.STRING(255),
+
+    // Additional Info
+    notes: {
+      type: DataTypes.TEXT,
       allowNull: true,
+    },
+    images: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      comment: "Array of image URLs",
     },
   },
   {

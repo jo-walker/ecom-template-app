@@ -1,49 +1,108 @@
-const express = require('express');
-const cors = require('cors'); // Import cors
-const bodyParser = require('body-parser'); // Import body-parser
-const sequelize = require('./config/database'); // Database config
-const productRoutes = require('./routes/productRoutes'); // Product routes
-const categoryRoutes = require('./routes/categoryRoutes'); // Category routes
-const paymentRoutes = require('./routes/paymentRoutes'); // Payment routes
-const orderRoutes = require('./routes/orderRoutes'); // Order routes
-const cartRoutes = require('./routes/cartRoutes'); // Cart routes
-const authRoutes = require('./routes/authRoutes'); // Auth routes
-const Order = require('./models/Order'); // Import models
-const Cart = require('./models/Cart');
-const Product = require('./models/Product'); // Import models
-const Category = require('./models/Category');
-const User = require('./models/User');
-const ProductCategory = require('./models/ProductCategory');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const sequelize = require("./config/database");
 
-// Create the Express app
+// Import all models
+const Category = require("./models/Category");
+const Style = require("./models/Style");
+const Color = require("./models/Color");
+const Size = require("./models/Size");
+const Product = require("./models/Product");
+const Vendor = require("./models/Vendor");
+
+// Import routes
+const categoryRoutes = require("./routes/categoryRoutes");
+const styleRoutes = require("./routes/styleRoutes");
+const colorRoutes = require("./routes/colorRoutes");
+const sizeRoutes = require("./routes/sizeRoutes");
+const productRoutes = require("./routes/productRoutes");
+const vendorRoutes = require("./routes/vendorRoutes");
+
 const app = express();
 
-// Middleware to parse JSON
+// Middleware
 app.use(express.json());
-app.use(cors()); // Use cors
-app.use(bodyParser.json()); // Use body-parser
+app.use(cors());
+app.use(bodyParser.json());
 
-// Set up relationships between models
-Product.belongsToMany(Category, { through: ProductCategory, foreignKey: 'product_sku' });
-Category.belongsToMany(Product, { through: ProductCategory, foreignKey: 'category_id' });
+// Define relationships
+Category.hasMany(Style, { foreignKey: "category_code", sourceKey: "code" });
+Style.belongsTo(Category, { foreignKey: "category_code", targetKey: "code" });
 
-// Sync the database
-sequelize.sync({ force: false })  // Set force to true only during development to reset DB
+Product.belongsTo(Category, { foreignKey: "category_code", targetKey: "code" });
+Product.belongsTo(Color, { foreignKey: "color_code", targetKey: "code" });
+Product.belongsTo(Size, { foreignKey: "size_code", targetKey: "code" });
+
+// Sync database - creates all tables
+sequelize
+  .sync({ force: false })
   .then(() => {
-    console.log('Database & tables created!');
+    console.log("✅ Database connected and tables created!");
+    console.log(
+      "📊 Tables: Categories, Styles, Colors, Sizes, Products, Vendors"
+    );
   })
-  .catch(err => console.log(err));
+  .catch((err) => {
+    console.error("❌ Database sync error:", err);
+  });
+
+// Root API endpoint - lists all available endpoints
+app.get("/api", (req, res) => {
+  res.json({
+    message: "Inventory Management API",
+    version: "1.0.0",
+    endpoints: {
+      health: "/api/health",
+      categories: "/api/categories",
+      styles: "/api/styles",
+      colors: "/api/colors",
+      sizes: "/api/sizes",
+      products: "/api/products",
+      vendors: "/api/vendors",
+    },
+    documentation: "Available endpoints listed above",
+  });
+});
+
+// Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Inventory Management API is running",
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // API routes
-app.use('/api', productRoutes);  // Use the product routes
-app.use('/api', categoryRoutes); // This is for category routes
-app.use('/api', paymentRoutes);  // This is for payment routes
-app.use('/api', orderRoutes);    // This is for order routes
-app.use('/api', cartRoutes);     // This is for cart routes
-app.use('/api', authRoutes);     // This is for auth routes
+app.use("/api/categories", categoryRoutes);
+app.use("/api/styles", styleRoutes);
+app.use("/api/colors", colorRoutes);
+app.use("/api/sizes", sizeRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/vendors", vendorRoutes);
 
-// Start the server
+// 404 handler - must be AFTER all other routes
+app.use((req, res) => {
+  res.status(404).json({
+    error: "Not Found",
+    message: `Cannot ${req.method} ${req.path}`,
+    availableEndpoints: [
+      "GET /api",
+      "GET /api/health",
+      "GET /api/categories",
+      "GET /api/styles",
+      "GET /api/colors",
+      "GET /api/sizes",
+      "GET /api/products",
+      "GET /api/vendors",
+    ],
+  });
+});
+
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`📡 API endpoints: http://localhost:${PORT}/api/`);
 });

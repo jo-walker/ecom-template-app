@@ -1,102 +1,78 @@
-const { Op } = require('sequelize');
-const express = require('express');
-const Product = require('../models/Product');
-const ProductCategory = require('../models/ProductCategory');
+const express = require("express");
 const router = express.Router();
+const Product = require("../models/Product");
+const Category = require("../models/Category");
+const Color = require("../models/Color");
+const Size = require("../models/Size");
 
-// Get all products
-router.get('/products', async (req, res) => {
+// Get all products (with details)
+router.get("/", async (req, res) => {
   try {
-    const products = await Product.findAll();
+    const products = await Product.findAll({
+      include: [
+        { model: Category, attributes: ["code", "name"] },
+        { model: Color, attributes: ["code", "name", "hex_value"] },
+        { model: Size, attributes: ["code", "name"] },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
     res.json(products);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Create a new product with categories
-router.post('/products', async (req, res) => {
-  const { categories, ...productData } = req.body;
-
+// Get one product
+router.get("/:barcode", async (req, res) => {
   try {
-    const product = await Product.create(productData);
-
-    // Associate categories with the product
-    if (categories && categories.length > 0) {
-      for (let categoryName of categories) {
-        await associateCategoryWithProduct(product, categoryName);
-      }
-    }
-
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-
-// Update a product
-router.put('/products/:id', async (req, res) => {
-  try {
-    const product = await Product.findByPk(req.params.id);
-    if (product) {
-      await product.update(req.body);
-      res.json(product);
-    } else {
-      res.status(404).json({ error: 'Product not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Delete a product
-router.delete('/products/:id', async (req, res) => {
-  try {
-    const product = await Product.findByPk(req.params.id);
-    if (product) {
-      await product.destroy();
-      res.json({ message: 'Product deleted' });
-    } else {
-      res.status(404).json({ error: 'Product not found' });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Route to fetch product by UPC or EAN (barcode)
-router.get('/products/:barcode', async (req, res) => { //:barcode is the parameter meaning it can be anything after /products/
-  // console.log('Fetching product with barcode:', req.params.barcode);
-
-  const { barcode } = req.params; // Fixed the parameter name
-  
-  try {
-    // Search for the product by UPC or EAN
-    const product = await Product.findOne({
-      where: {
-        [Op.or]: [
-          { SKU: barcode },
-          { UPC: barcode },
-          { EAN: barcode }
-        ]
-      }
+    const product = await Product.findByPk(req.params.barcode, {
+      include: [{ model: Category }, { model: Color }, { model: Size }],
     });
 
-    // Log product data to ensure it's fetched correctly
-    console.log('Product fetched:', product);
-
-    // If product is found, return it
-    if (product) {
-      res.json({
-        product,
-        price: product.selling_price // price inside `selling_price` field as JSON
-      });
-    } else {
-      res.status(404).json({ message: 'Product not found' });
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Create product
+router.post("/", async (req, res) => {
+  try {
+    const product = await Product.create(req.body);
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Update product
+router.put("/:barcode", async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.barcode);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    await product.update(req.body);
+    res.json(product);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Delete product
+router.delete("/:barcode", async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.barcode);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    await product.destroy();
+    res.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 

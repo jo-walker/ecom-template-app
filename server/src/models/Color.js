@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Category = sequelize.define(
-  "Category",
+const Color = sequelize.define(
+  "Color",
   {
     code: {
       type: DataTypes.STRING(10),
@@ -14,15 +14,16 @@ const Category = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
+    hex_value: {
+      type: DataTypes.STRING(7),
       allowNull: true,
+      comment: "Color hex code, e.g., #000000",
     },
   },
   {
-    tableName: "Categories",
+    tableName: "Colors",
     timestamps: true,
   }
 );
 
-module.exports = Category;
+module.exports = Color;

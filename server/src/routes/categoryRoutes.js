@@ -1,68 +1,68 @@
-const express = require('express');
-const Category = require('../models/Category');
-const Product = require('../models/Product');
+const express = require("express");
 const router = express.Router();
+const Category = require("../models/Category");
 
 // Get all categories
-router.get('/categories', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const categories = await Category.findAll();
+    const categories = await Category.findAll({
+      order: [["code", "ASC"]],
+    });
     res.json(categories);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
 // Get one category
-router.get('/categories/:id', async (req, res) => {
+router.get("/:code", async (req, res) => {
   try {
-    const category = await Category.findByPk(req.params.id);
-    if (category) {
-      res.json(category);
-    } else {
-      res.status(404).json({ error: 'Category not found' });
+    const category = await Category.findByPk(req.params.code);
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Create a new category
-router.post('/categories', async (req, res) => {
+// Create category
+router.post("/", async (req, res) => {
   try {
     const category = await Category.create(req.body);
     res.status(201).json(category);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 
-// Update a category
-router.put('/categories/:id', async (req, res) => {
+// Update category
+router.put("/:code", async (req, res) => {
   try {
-    const category = await Category.findByPk(req.params.id);
-    if (category) {
-      await category.update(req.body);
-      res.json(category);
-    } else {
-      res.status(404).json({ error: 'Category not found' });
+    const category = await Category.findByPk(req.params.code);
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    await category.update(req.body);
+    res.json(category);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 });
 
-// Delete all categories and reset the sequence
-router.delete('/categories', async (req, res) => {
-    try {
-      await Category.destroy({ where: {}, truncate: true }); // Delete all categories
-      await sequelize.query('ALTER SEQUENCE category_id_seq RESTART WITH 1'); // Reset the sequence
-  
-      res.json({ message: 'All categories deleted and sequence reset' });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
+// Delete category
+router.delete("/:code", async (req, res) => {
+  try {
+    const category = await Category.findByPk(req.params.code);
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
     }
+    await category.destroy();
+    res.json({ message: "Category deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;
-

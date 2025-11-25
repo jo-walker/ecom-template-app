@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-const Category = sequelize.define(
-  "Category",
+const Size = sequelize.define(
+  "Size",
   {
     code: {
       type: DataTypes.STRING(10),
@@ -14,15 +14,17 @@ const Category = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
+    sort_order: {
+      type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
+      comment: "Display order: 0=Free Size, 1=XS, 2=S, etc.",
     },
   },
   {
-    tableName: "Categories",
+    tableName: "Sizes",
     timestamps: true,
   }
 );
 
-module.exports = Category;
+module.exports = Size;

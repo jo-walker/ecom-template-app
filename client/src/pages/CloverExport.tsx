@@ -15,6 +15,7 @@ export const CloverExport: React.FC = () => {
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<ExportFilter>("pending");
+  const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
     loadProducts();
@@ -153,11 +154,19 @@ export const CloverExport: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Clover Export</h1>
-        <p className="text-gray-600 mt-1">
-          Generate import files for Clover POS system
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Clover Export</h1>
+          <p className="text-gray-600 mt-1">
+            Generate import files for Clover POS system
+          </p>
+        </div>
+        <button
+          onClick={() => setShowInstructions(true)}
+          className="btn-secondary"
+        >
+          ❓ How to Use
+        </button>
       </div>
 
       {/* Stats */}
@@ -246,32 +255,60 @@ export const CloverExport: React.FC = () => {
         </div>
       </div>
 
-      {/* Instructions */}
-      <div className="alert-info">
-        <h3 className="font-semibold mb-2">📌 How to use:</h3>
-        <ol className="text-sm space-y-1 ml-5 list-decimal">
-          <li>
-            <strong>New Products Only:</strong> Shows products not yet exported
-            to Clover
-          </li>
-          <li>
-            <strong>Select products:</strong> Check items you want to export (or
-            export all)
-          </li>
-          <li>
-            <strong>Export:</strong> Download Excel/CSV file in Clover import
-            format
-          </li>
-          <li>
-            <strong>Import to Clover:</strong> Upload the file in your Clover
-            dashboard
-          </li>
-          <li>
-            <strong>Mark as Exported:</strong> Prevents duplicates on next
-            export
-          </li>
-        </ol>
-      </div>
+      {/* Instructions Modal */}
+      {showInstructions && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={() => setShowInstructions(false)}
+        >
+          <div
+            className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">
+                📌 How to Use Clover Export
+              </h3>
+              <button
+                onClick={() => setShowInstructions(false)}
+                className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+            <ol className="space-y-3 ml-5 list-decimal text-gray-700">
+              <li>
+                <strong>New Products Only:</strong> Shows products not yet
+                exported to Clover
+              </li>
+              <li>
+                <strong>Select products:</strong> Check items you want to export
+                (or export all)
+              </li>
+              <li>
+                <strong>Export:</strong> Download Excel/CSV file in Clover
+                import format
+              </li>
+              <li>
+                <strong>Import to Clover:</strong> Upload the file in your
+                Clover dashboard
+              </li>
+              <li>
+                <strong>Mark as Exported:</strong> Prevents duplicates on next
+                export
+              </li>
+            </ol>
+            <div className="mt-6 flex justify-end">
+              <button
+                onClick={() => setShowInstructions(false)}
+                className="btn-primary"
+              >
+                Got it!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Products Table */}
       {products.length === 0 ? (

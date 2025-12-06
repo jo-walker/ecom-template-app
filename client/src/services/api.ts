@@ -127,4 +127,23 @@ export const createVendor = async (vendor: Partial<Vendor>): Promise<Vendor> => 
   return response.data;
 };
 
+// Export endpoints
+export const getPendingExportProducts = async (): Promise<Product[]> => {
+  const response = await api.get('/export/clover/pending');
+  return response.data;
+};
+
+export const getAllExportProducts = async (): Promise<Product[]> => {
+  const response = await api.get('/export/clover/all');
+  return response.data;
+};
+
+export const markProductsAsExported = async (barcodes: string[]): Promise<void> => {
+  await api.post('/export/clover/mark-exported', { barcodes });
+};
+
+export const resetExportStatus = async (barcodes?: string[]): Promise<void> => {
+  await api.post('/export/clover/reset-export-status', { barcodes });
+};
+
 export default api;

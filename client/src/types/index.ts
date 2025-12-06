@@ -45,6 +45,9 @@ export interface Product {
   stock_quantity: number;
   notes?: string;
   images?: string[];
+  exported_to_clover?: boolean;
+  last_exported_at?: string | Date;
+  clover_id?: string;
   createdAt?: string;
   updatedAt?: string;
   

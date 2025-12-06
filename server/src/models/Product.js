@@ -77,6 +77,23 @@ const Product = sequelize.define(
       allowNull: true,
       comment: "Array of image URLs",
     },
+
+    // Clover Export Tracking
+    exported_to_clover: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      comment: "Has this product been exported to Clover?",
+    },
+    last_exported_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      comment: "When was this product last exported to Clover?",
+    },
+    clover_id: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+      comment: "Clover system ID after import",
+    },
   },
   {
     tableName: "Products",

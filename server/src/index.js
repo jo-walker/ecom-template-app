@@ -18,6 +18,7 @@ const colorRoutes = require("./routes/colorRoutes");
 const sizeRoutes = require("./routes/sizeRoutes");
 const productRoutes = require("./routes/productRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
+const exportRoutes = require("./routes/exportRoutes");
 
 const app = express();
 
@@ -60,6 +61,7 @@ app.get("/api", (req, res) => {
       sizes: "/api/sizes",
       products: "/api/products",
       vendors: "/api/vendors",
+      export: "/api/export",
     },
     documentation: "Available endpoints listed above",
   });
@@ -81,6 +83,7 @@ app.use("/api/colors", colorRoutes);
 app.use("/api/sizes", sizeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/vendors", vendorRoutes);
+app.use("/api/export", exportRoutes);
 
 // 404 handler - must be AFTER all other routes
 app.use((req, res) => {
@@ -96,6 +99,7 @@ app.use((req, res) => {
       "GET /api/sizes",
       "GET /api/products",
       "GET /api/vendors",
+      "GET /api/export",
     ],
   });
 });

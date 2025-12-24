@@ -11,6 +11,7 @@ const Size = require("./models/Size");
 const Product = require("./models/Product");
 const Vendor = require("./models/Vendor");
 const Sale = require("./models/Sale");
+const User = require("./models/User");
 
 // Import routes
 const categoryRoutes = require("./routes/categoryRoutes");
@@ -22,6 +23,7 @@ const vendorRoutes = require("./routes/vendorRoutes");
 const exportRoutes = require("./routes/exportRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 const saleRoutes = require("./routes/saleRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -48,7 +50,7 @@ sequelize
   .then(() => {
     console.log("✅ Database connected and tables created!");
     console.log(
-      "📊 Tables: Categories, Styles, Colors, Sizes, Products, Vendors, Sales"
+      "📊 Tables: Categories, Styles, Colors, Sizes, Products, Vendors, Sales, Users"
     );
     console.log(
       "⚠️  REMINDER: Change force to false in index.js to preserve data!"
@@ -65,6 +67,7 @@ app.get("/api", (req, res) => {
     version: "1.0.0",
     endpoints: {
       health: "/api/health",
+      auth: "/api/auth",
       categories: "/api/categories",
       styles: "/api/styles",
       colors: "/api/colors",
@@ -89,6 +92,7 @@ app.get("/api/health", (req, res) => {
 });
 
 // API routes
+app.use("/api/auth", authRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/styles", styleRoutes);
 app.use("/api/colors", colorRoutes);

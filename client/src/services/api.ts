@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Product, Category, Style, Color, Size, Vendor } from '../types';
+import { useAuthStore } from '../stores/authStore';
 
 const API_BASE_URL = 'http://localhost:3000/api';
 
@@ -9,6 +10,33 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+// Add request interceptor to include auth token in all requests
+api.interceptors.request.use(
+  (config) => {
+    const token = useAuthStore.getState().token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle auth errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token is invalid or expired, logout user
+      useAuthStore.getState().logout();
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Categories
 export const getCategories = async (): Promise<Category[]> => {
@@ -176,6 +204,37 @@ export const getSalesSummary = async (params?: { startDate?: string; endDate?: s
 
 export const deleteSale = async (id: number): Promise<void> => {
   await api.delete(`/sales/${id}`);
+};
+
+// Authentication
+export interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  user: {
+    id: number;
+    username: string;
+    fullName: string | null;
+    role: 'admin' | 'staff';
+  };
+}
+
+export const login = async (credentials: LoginCredentials): Promise<LoginResponse> => {
+  const response = await api.post('/auth/login', credentials);
+  return response.data;
+};
+
+export const verifyToken = async (): Promise<{ valid: boolean; user: any }> => {
+  const response = await api.get('/auth/verify');
+  return response.data;
+};
+
+export const getProfile = async (): Promise<{ user: any }> => {
+  const response = await api.get('/auth/profile');
+  return response.data;
 };
 
 export default api;

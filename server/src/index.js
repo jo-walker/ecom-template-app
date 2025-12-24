@@ -10,6 +10,7 @@ const Color = require("./models/Color");
 const Size = require("./models/Size");
 const Product = require("./models/Product");
 const Vendor = require("./models/Vendor");
+const Sale = require("./models/Sale");
 
 // Import routes
 const categoryRoutes = require("./routes/categoryRoutes");
@@ -19,6 +20,8 @@ const sizeRoutes = require("./routes/sizeRoutes");
 const productRoutes = require("./routes/productRoutes");
 const vendorRoutes = require("./routes/vendorRoutes");
 const exportRoutes = require("./routes/exportRoutes");
+const reportRoutes = require("./routes/reportRoutes");
+const saleRoutes = require("./routes/saleRoutes");
 
 const app = express();
 
@@ -35,13 +38,17 @@ Product.belongsTo(Category, { foreignKey: "category_code", targetKey: "code" });
 Product.belongsTo(Color, { foreignKey: "color_code", targetKey: "code" });
 Product.belongsTo(Size, { foreignKey: "size_code", targetKey: "code" });
 
+// Sale relationships
+Sale.belongsTo(Product, { foreignKey: "barcode", targetKey: "barcode" });
+Product.hasMany(Sale, { foreignKey: "barcode", sourceKey: "barcode" });
+
 // Sync database - creates all tables
 sequelize
   .sync({ force: false })
   .then(() => {
     console.log("✅ Database connected and tables created!");
     console.log(
-      "📊 Tables: Categories, Styles, Colors, Sizes, Products, Vendors"
+      "📊 Tables: Categories, Styles, Colors, Sizes, Products, Vendors, Sales"
     );
   })
   .catch((err) => {
@@ -62,6 +69,8 @@ app.get("/api", (req, res) => {
       products: "/api/products",
       vendors: "/api/vendors",
       export: "/api/export",
+      reports: "/api/reports",
+      sales: "/api/sales",
     },
     documentation: "Available endpoints listed above",
   });
@@ -84,6 +93,8 @@ app.use("/api/sizes", sizeRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/vendors", vendorRoutes);
 app.use("/api/export", exportRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/sales", saleRoutes);
 
 // 404 handler - must be AFTER all other routes
 app.use((req, res) => {
@@ -100,6 +111,8 @@ app.use((req, res) => {
       "GET /api/products",
       "GET /api/vendors",
       "GET /api/export",
+      "GET /api/reports",
+      "POST /api/sales",
     ],
   });
 });

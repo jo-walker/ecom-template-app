@@ -9,6 +9,7 @@ import { ManageColors } from './pages/ManageColors';
 import { ManageSizes } from './pages/ManageSizes';
 import { CloverExport } from './pages/CloverExport';
 import { SalesReports } from './pages/SalesReports';
+import { ItemReports } from './pages/ItemReports';
 
 function AppContent() {
   const location = useLocation();
@@ -58,6 +59,7 @@ function AppContent() {
           {sidebarOpen && <NavSection title="Reports" />}
 
           <NavItem to="/reports" icon="📊" label="Sales Reports" active={isActive('/reports')} collapsed={!sidebarOpen} />
+          <NavItem to="/item-reports" icon="📋" label="Item Reports" active={isActive('/item-reports')} collapsed={!sidebarOpen} />
         </nav>
       </aside>
 
@@ -98,6 +100,7 @@ function AppContent() {
             <Route path="/sizes" element={<ManageSizes />} />
             <Route path="/clover-export" element={<CloverExport />} />
             <Route path="/reports" element={<SalesReports />} />
+            <Route path="/item-reports" element={<ItemReports />} />
           </Routes>
         </div>
       </main>
@@ -149,6 +152,7 @@ function getPageTitle(pathname: string): string {
     '/sizes': 'Manage Sizes',
     '/clover-export': 'Clover Export',
     '/reports': 'Sales Reports',
+    '/item-reports': 'Item Reports',
   };
   return titles[pathname] || 'Inventory Management';
 }
@@ -165,6 +169,7 @@ function getPageDescription(pathname: string): string {
     '/sizes': 'Manage size options',
     '/clover-export': 'Generate Clover POS import files',
     '/reports': 'Analyze inventory value and trends',
+    '/item-reports': 'Detailed product inventory report',
   };
   return descriptions[pathname] || '';
 }

@@ -61,6 +61,11 @@ const Product = sequelize.define(
       allowNull: false,
       defaultValue: 0.0,
     },
+    initial_quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
     stock_quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,

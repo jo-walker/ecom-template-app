@@ -42,6 +42,7 @@ export interface Product {
   vendor_sku?: string;
   cost_price?: number;
   retail_price: number;
+  initial_quantity: number;  // Initial quantity when product was added
   stock_quantity: number;
   notes?: string;
   images?: string[];
@@ -50,7 +51,7 @@ export interface Product {
   clover_id?: string;
   createdAt?: string;
   updatedAt?: string;
-  
+
   // Populated from joins
   Category?: Category;
   Color?: Color;

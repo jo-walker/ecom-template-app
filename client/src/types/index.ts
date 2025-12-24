@@ -97,3 +97,45 @@ export interface CategoryPerformance {
   totalItems: number;
   percentage: number;
 }
+
+// Sales Types
+export interface Sale {
+  id: number;
+  barcode: string;
+  quantity_sold: number;
+  unit_price: number;
+  total_amount: number;
+  sale_date: string | Date;
+  payment_method?: string;
+  notes?: string;
+  transaction_id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+
+  // Populated from joins
+  Product?: Product;
+}
+
+export interface RecordSaleRequest {
+  barcode: string;
+  quantity_sold: number;
+  payment_method?: string;
+  notes?: string;
+  transaction_id?: string;
+}
+
+export interface RecordSaleResponse {
+  message: string;
+  sale: Sale;
+  updated_stock: number;
+}
+
+export interface SalesSummary {
+  total_sales: number;
+  total_quantity_sold: number;
+  total_revenue: string;
+  date_range: {
+    start: string;
+    end: string;
+  };
+}

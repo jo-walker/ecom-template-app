@@ -50,6 +50,9 @@ sequelize
     console.log(
       "📊 Tables: Categories, Styles, Colors, Sizes, Products, Vendors, Sales"
     );
+    console.log(
+      "⚠️  REMINDER: Change force to false in index.js to preserve data!"
+    );
   })
   .catch((err) => {
     console.error("❌ Database sync error:", err);

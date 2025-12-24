@@ -10,6 +10,7 @@ import { ManageSizes } from './pages/ManageSizes';
 import { CloverExport } from './pages/CloverExport';
 import { SalesReports } from './pages/SalesReports';
 import { ItemReports } from './pages/ItemReports';
+import { SalesRegister } from './pages/SalesRegister';
 
 function AppContent() {
   const location = useLocation();
@@ -56,6 +57,10 @@ function AppContent() {
 
           <NavItem to="/clover-export" icon="📥" label="Clover Export" active={isActive('/clover-export')} collapsed={!sidebarOpen} />
 
+          {sidebarOpen && <NavSection title="Sales" />}
+
+          <NavItem to="/sales-register" icon="💳" label="Register Sale" active={isActive('/sales-register')} collapsed={!sidebarOpen} />
+
           {sidebarOpen && <NavSection title="Reports" />}
 
           <NavItem to="/reports" icon="📊" label="Sales Reports" active={isActive('/reports')} collapsed={!sidebarOpen} />
@@ -99,6 +104,7 @@ function AppContent() {
             <Route path="/colors" element={<ManageColors />} />
             <Route path="/sizes" element={<ManageSizes />} />
             <Route path="/clover-export" element={<CloverExport />} />
+            <Route path="/sales-register" element={<SalesRegister />} />
             <Route path="/reports" element={<SalesReports />} />
             <Route path="/item-reports" element={<ItemReports />} />
           </Routes>
@@ -151,6 +157,7 @@ function getPageTitle(pathname: string): string {
     '/colors': 'Manage Colors',
     '/sizes': 'Manage Sizes',
     '/clover-export': 'Clover Export',
+    '/sales-register': 'Register Sale',
     '/reports': 'Sales Reports',
     '/item-reports': 'Item Reports',
   };
@@ -168,6 +175,7 @@ function getPageDescription(pathname: string): string {
     '/colors': 'Manage color options',
     '/sizes': 'Manage size options',
     '/clover-export': 'Generate Clover POS import files',
+    '/sales-register': 'Record sales and update inventory automatically',
     '/reports': 'Analyze inventory value and trends',
     '/item-reports': 'Detailed product inventory report',
   };

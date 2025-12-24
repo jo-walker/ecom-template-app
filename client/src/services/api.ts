@@ -151,6 +151,31 @@ export const salesReport = async (startDate: string, endDate: string): Promise<a
     params: { start_date: startDate, end_date: endDate },
   });
   return response.data;
-}
+};
+
+// Sales
+export const recordSale = async (saleData: any): Promise<any> => {
+  const response = await api.post('/sales', saleData);
+  return response.data;
+};
+
+export const getAllSales = async (params?: { startDate?: string; endDate?: string; barcode?: string }): Promise<any[]> => {
+  const response = await api.get('/sales', { params });
+  return response.data;
+};
+
+export const getSalesByProduct = async (barcode: string): Promise<any> => {
+  const response = await api.get(`/sales/product/${barcode}`);
+  return response.data;
+};
+
+export const getSalesSummary = async (params?: { startDate?: string; endDate?: string }): Promise<any> => {
+  const response = await api.get('/sales/summary', { params });
+  return response.data;
+};
+
+export const deleteSale = async (id: number): Promise<void> => {
+  await api.delete(`/sales/${id}`);
+};
 
 export default api;

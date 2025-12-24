@@ -148,6 +148,7 @@ export const ProductEntry: React.FC = () => {
       vendor_sku: vendorSku || undefined,
       cost_price: costPrice ? parseFloat(costPrice) : undefined,
       retail_price: parseFloat(retailPrice),
+      initial_quantity: quantity,
       stock_quantity: quantity,
       notes: notes || undefined,
     };

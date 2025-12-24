@@ -11,11 +11,11 @@ export const generateBarcode = (
 };
 
 export const parseBarcode = (barcode: string) => {
-  // Assuming format: CC999999 (2 char category, 3 style, 1 size, 2 color)
+  // format: CC999999 (2 char category, 3 style, 1 size, 2 color)
   if (barcode.length < 8) {
     return null;
   }
-  
+
   return {
     categoryCode: barcode.substring(0, 2),
     styleNumber: barcode.substring(2, 5),

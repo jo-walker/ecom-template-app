@@ -146,4 +146,11 @@ export const resetExportStatus = async (barcodes?: string[]): Promise<void> => {
   await api.post('/export/clover/reset-export-status', { barcodes });
 };
 
+export const salesReport = async (startDate: string, endDate: string): Promise<any> => {
+  const response = await api.get('/reports/sales', {
+    params: { start_date: startDate, end_date: endDate },
+  });
+  return response.data;
+}
+
 export default api;

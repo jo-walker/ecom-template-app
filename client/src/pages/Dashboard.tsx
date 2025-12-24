@@ -136,7 +136,7 @@ export const Dashboard: React.FC = () => {
         <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
           <span>⚡</span> Quick Actions
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
           <QuickActionCard
             to="/product-entry"
             icon="➕"
@@ -164,6 +164,13 @@ export const Dashboard: React.FC = () => {
             title="Export"
             description="Generate Clover file"
             color="orange"
+          />
+          <QuickActionCard
+            to="/reports"
+            icon="📈"
+            title="Sales Reports"
+            description="View sales and inventory reports"
+            color="red"
           />
         </div>
       </div>
@@ -204,7 +211,7 @@ export const Dashboard: React.FC = () => {
 
 // Types
 type StatCardColor = "blue" | "green" | "red" | "purple";
-type QuickActionColor = "blue" | "green" | "purple" | "orange";
+type QuickActionColor = "blue" | "green" | "purple" | "orange" | "red";
 type ProgressBarColor = "green" | "red" | "gray";
 
 interface StatCardProps {
@@ -282,6 +289,7 @@ function QuickActionCard({
       "from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-200 text-purple-600",
     orange:
       "from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 text-orange-600",
+    red: "from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 text-red-600",
   };
 
   return (

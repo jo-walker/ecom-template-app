@@ -67,3 +67,32 @@ export interface Vendor {
   createdAt?: string;
   updatedAt?: string;
 }
+
+// Report Types
+export interface ReportDateRange {
+  start: Date;
+  end: Date;
+  previousStart: Date;
+  previousEnd: Date;
+}
+
+export interface InventoryReport {
+  startDate: string;
+  endDate: string;
+  currentValue: number;
+  previousValue: number;
+  valueChange: number;
+  valueChangePercent: number;
+  totalProducts: number;
+  totalItems: number;
+  categoryBreakdown: CategoryPerformance[];
+}
+
+export interface CategoryPerformance {
+  categoryCode: string;
+  categoryName: string;
+  productCount: number;
+  totalValue: number;
+  totalItems: number;
+  percentage: number;
+}
